@@ -1,6 +1,8 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-use-before-define */
 const mongoose = require('mongoose');
 const validator = require('validator');
+const jwt = require('jsonwebtoken');
 const bycrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
@@ -48,6 +50,14 @@ const userSchema = new mongoose.Schema({
     required: true,
     min: 13,
   },
+
+  tokens: [{
+    token: {
+      type: String,
+      required: true,
+    },
+  }],
+
 });
 
 userSchema.pre('save', async function preSaveOperation(next) {
@@ -79,6 +89,14 @@ userSchema.static('findByCredentials', async ({ input, password }) => {
   }
 
   return user;
+});
+
+userSchema.method('generateAuthToken', async function generateAuthToken() {
+  const user = this;
+  const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET);
+  user.tokens = user.tokens.concat({ token });
+  await user.save();
+  return token;
 });
 
 const User = mongoose.model('User', userSchema);

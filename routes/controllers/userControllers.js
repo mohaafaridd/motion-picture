@@ -6,17 +6,20 @@ const signup = async (req, res) => {
 
   try {
     await user.save();
+    const token = await user.generateAuthToken();
 
-    res.status(201).send({ user });
+    res.status(201).send({ user, token });
   } catch (error) {
     res.status(400).send(error);
   }
 };
 
+// Sign in
 const signin = async (req, res) => {
   try {
     const user = await User.findByCredentials(req.body);
-    res.send(user);
+    const token = await user.generateAuthToken();
+    res.status(200).send({ user, token });
   } catch (error) {
     res.status(400).send();
   }
