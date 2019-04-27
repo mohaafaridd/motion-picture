@@ -13,6 +13,16 @@ const signup = async (req, res) => {
   }
 };
 
+const signin = async (req, res) => {
+  try {
+    const user = await User.findByCredentials(req.body);
+    res.send(user);
+  } catch (error) {
+    res.status(400).send();
+  }
+};
+
 module.exports = {
   signup,
+  signin,
 };

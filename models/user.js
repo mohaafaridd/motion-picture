@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bycrypt = require('bcryptjs');
@@ -56,6 +57,28 @@ userSchema.pre('save', async function preSaveOperation(next) {
   }
 
   next();
+});
+
+userSchema.static('findByCredentials', async ({ input, password }) => {
+  let user;
+
+  if (validator.isEmail(input)) {
+    user = await User.findOne({ email: input });
+  } else {
+    user = await User.findOne({ nickname: input });
+  }
+
+  if (!user) {
+    throw new Error('Unable to login!');
+  }
+
+  const isMatch = await bycrypt.compare(password, user.password);
+
+  if (!isMatch) {
+    throw new Error('Unable to login!');
+  }
+
+  return user;
 });
 
 const User = mongoose.model('User', userSchema);
