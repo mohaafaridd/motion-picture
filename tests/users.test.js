@@ -2,6 +2,7 @@
 /* eslint-disable no-undef */
 const request = require('supertest');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 const app = require('../app');
 const User = require('../models/user');
 
@@ -13,6 +14,9 @@ const userOne = {
   age: 20,
   email: 'moha.test@testing.com',
   password: 'testing',
+  tokens: [{
+    token: jwt.sign({ _id: userOneId }, process.env.JWT_SECRET),
+  }],
 };
 
 beforeEach(async () => {
