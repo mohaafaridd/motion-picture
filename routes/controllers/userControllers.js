@@ -1,8 +1,13 @@
+const User = require('../../models/user');
 
 // Sign up
-const signup = (req, res) => {
+const signup = async (req, res) => {
+  const user = new User(req.body);
+
   try {
-    res.status(201).send('Registered');
+    await user.save();
+
+    res.status(201).send({ user });
   } catch (error) {
     res.status(400).send(error);
   }

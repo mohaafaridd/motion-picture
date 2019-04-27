@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     minlength: 5,
     maxlength: 32,
     trim: true,
-    match: /^[a-zA-Z][a-z-A-Z-. ]+[a-zA-Z]$/,
+    match: /^[a-zA-Z][a-z-A-Z ]+[a-zA-Z]$/,
   },
 
   nickname: {
@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
     trim: true,
-    match: /^[a-zA-Z][a-z-A-Z0-9-.]+[a-zA-Z]$/,
+    match: /^\w([-.]?\w)+\w$/,
   },
 
   email: {
