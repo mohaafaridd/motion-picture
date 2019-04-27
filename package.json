@@ -4,8 +4,8 @@
     "private": true,
     "scripts": {
         "start": "node ./bin/www",
-        "dev": "nodemon ./bin/www",
-        "test": "jest --watch --runInBand"
+        "dev": "env-cmd ./config/dev.env nodemon ./bin/www",
+        "test": "env-cmd ./config/test.env jest --watch --runInBand"
     },
     "dependencies": {
         "cookie-parser": "~1.4.3",
@@ -19,6 +19,7 @@
         "validator": "^10.11.0"
     },
     "devDependencies": {
+        "env-cmd": "^8.0.2",
         "eslint": "^5.16.0",
         "eslint-config-airbnb-base": "^13.1.0",
         "eslint-plugin-import": "^2.17.2",
