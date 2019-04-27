@@ -1,4 +1,4 @@
-const User = require('../../models/user');
+const User = require('../models/user');
 
 // Sign up
 const signup = async (req, res) => {
@@ -25,7 +25,21 @@ const signin = async (req, res) => {
   }
 };
 
+// Sign out
+const signout = async (req, res) => {
+  try {
+    req.user.tokens = req.user.tokens
+      .filter(token => token.token !== req.token);
+
+    await req.user.save();
+    res.send();
+  } catch (error) {
+    res.status(500).send();
+  }
+};
+
 module.exports = {
   signup,
   signin,
+  signout,
 };
