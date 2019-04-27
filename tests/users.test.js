@@ -137,3 +137,12 @@ test('Should login using nickname', async () => {
     })
     .expect(200);
 });
+
+test('Should not login using fake information', async () => {
+  await request(app).post('/users/signin')
+    .send({
+      input: 'fake-nickname',
+      password: 'fake-password',
+    })
+    .expect(400);
+});
