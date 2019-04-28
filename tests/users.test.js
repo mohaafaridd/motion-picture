@@ -150,3 +150,19 @@ test('Should not login using fake information', async () => {
     })
     .expect(400);
 });
+
+test('Should logout user', async () => {
+  await request(app).post('/users/signout')
+    .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+    .send()
+    .expect(200);
+
+  const user = await User.findById(userOneId);
+  expect(user.tokens).toHaveLength(0);
+});
+
+test('Should not logout unauthenticated user', async () => {
+  await request(app).post('/users/signout')
+    .send()
+    .expect(401);
+});
