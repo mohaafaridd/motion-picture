@@ -39,6 +39,7 @@ const filterData = data => data.filter(obj => obj.Response === 'True');
 // Maps filtered data to fit the model
 const mapData = data => data
   .map(media => ({
+    id: media.imdbID,
     title: media.Title,
     poster: media.Poster,
     year: parseInt(media.Year, 10),
@@ -50,6 +51,8 @@ const mapData = data => data
       source: rating.Source,
       value: parseFloat(rating.Value),
     })),
+    type: media.Type,
+    seasons: parseInt(media.totalSeasons, 10),
   }));
 
 module.exports = {

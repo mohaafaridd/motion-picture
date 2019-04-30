@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
-const movieSchema = new mongoose.Schema({
+const mediaSchema = new mongoose.Schema({
+
+  id: {
+    type: String,
+    required: true,
+  },
 
   title: {
     type: String,
@@ -39,8 +44,17 @@ const movieSchema = new mongoose.Schema({
       type: Number,
     },
   }],
+
+  type: {
+    type: String,
+    required: true,
+  },
+
+  seasons: {
+    type: Number,
+  },
 });
 
-const Movie = mongoose.model('User', movieSchema);
+const Media = mongoose.model('Media', mediaSchema);
 
-module.exports = Movie;
+module.exports = Media;
