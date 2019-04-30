@@ -22,7 +22,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
   },
 
-  genre: [String],
+  genres: [String],
 
   actors: [String],
 
@@ -31,6 +31,14 @@ const movieSchema = new mongoose.Schema({
     required: true,
   },
 
+  rating: [{
+    source: {
+      type: String,
+    },
+    value: {
+      type: Number,
+    },
+  }],
 });
 
 const Movie = mongoose.model('User', movieSchema);
