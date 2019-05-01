@@ -5,6 +5,10 @@ const view = async (req, res) => {
   try {
     const { id, type } = req.query;
 
+    if ((type !== 'tv' && type !== 'movie') || id.trim() === '') {
+      throw new Error('Search error');
+    }
+
     const link = viewHelpers.getLink(id, type);
 
     const request = viewHelpers.mapRequests(link);

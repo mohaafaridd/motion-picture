@@ -2,11 +2,10 @@ const searchHelper = require('./helpers/searchHelpers');
 
 const search = async (req, res) => {
   try {
-    const { title } = req.query;
-    const { type } = req.query;
+    const { title, type } = req.query;
 
     if ((type !== 'tv' && type !== 'movie') || title.trim() === '') {
-      return res.status(400).send('Error search');
+      throw new Error('Search error');
     }
 
     // Get media array
