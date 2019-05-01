@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.get('/search', searchController);
 
-router.get('/view', viewController);
+router.get('/:type/:id', viewController);
 
 module.exports = router;

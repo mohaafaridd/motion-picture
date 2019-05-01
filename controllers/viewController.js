@@ -3,7 +3,7 @@ const viewHelpers = require('./helpers/viewHelpers');
 
 const view = async (req, res) => {
   try {
-    const { id, type } = req.query;
+    const { id, type } = req.params;
 
     if ((type !== 'tv' && type !== 'movie') || id.trim() === '') {
       throw new Error('Search error');
