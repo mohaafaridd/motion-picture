@@ -22,10 +22,6 @@ const mediaSchema = new mongoose.Schema({
     required: true,
   },
 
-  tags: [{
-    type: String,
-  }],
-
 });
 
 const Media = mongoose.model('Media', mediaSchema);

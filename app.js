@@ -8,7 +8,8 @@ const { connectDB } = require('./db/mongoose');
 
 const indexRouter = require('./routes/index');
 const userRouter = require('./routes/user');
-const mediaRouter = require('./routes//media');
+const mediaRouter = require('./routes/media');
+const listsRouter = require('./routes/lists');
 
 const app = express();
 connectDB();
@@ -31,6 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', userRouter);
 app.use('/media', mediaRouter);
+app.use('/lists', listsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

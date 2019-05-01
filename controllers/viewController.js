@@ -13,26 +13,8 @@ const view = async (req, res) => {
 
     const data = viewHelpers.getData(result);
 
-    const mappedData = viewHelpers.mapData([data]);
+    const mappedData = viewHelpers.mapData([data])[0];
 
-    // Get all titles
-    // const Ids = searchHelper.getIds(mediaArray);
-
-    // const links = searchHelper.getLinks(titles);
-
-    // if (links.length === 0) {
-    //   return res.status(404).send();
-    // }
-
-    // const requests = searchHelper.mapRequests(links);
-
-    // const results = await Promise.all(requests);
-
-    // const data = searchHelper.getData(results);
-
-    // const filteredData = searchHelper.filterData(data);
-
-    // const mappedData = searchHelper.mapData(filteredData);
     res.send(mappedData);
   } catch (error) {
     res.send(error);

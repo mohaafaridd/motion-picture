@@ -11,7 +11,8 @@ const getMediaArray = async ({ title, type }) => {
 const mapData = data => data
   .map(obj => ({
     id: obj.id,
-    title: obj.title,
+    // title for movies, original name for tv shows
+    title: obj.title ? obj.title : obj.original_name,
     overview: obj.overview,
     poster: obj.poster_path,
   }));

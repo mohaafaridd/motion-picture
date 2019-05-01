@@ -3,8 +3,7 @@ const axios = require('axios');
 // Maps titles to return an array of links
 const getLink = (id) => {
   // Returns non duplicated set of links
-  // const links = `http://www.omdbapi.com/?apikey=${process.env.OMDB_API_KEY}&t=${encodeURIComponent(title)}`;
-  const link = `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.TMDB_API_KEY}&append_to_response=credits,videos,similar`;
+  const link = `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.TMDB_API_KEY}&append_to_response=credits,videos,similar,keywords`;
   return link;
 };
 
@@ -19,6 +18,7 @@ const mapData = data => data
     id: obj.id,
     title: obj.title,
     trailer: (obj.videos.results.filter(video => video.type === 'Trailer'))[0],
+    poster: obj.poster_path,
     overview: obj.overview,
     actors: obj.credits.cast,
     similar: obj.similar.results.map(similarMovie => ({
