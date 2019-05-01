@@ -58,7 +58,12 @@ const userSchema = new mongoose.Schema({
       required: true,
     },
   }],
+});
 
+userSchema.virtual('favorite', {
+  ref: 'Media',
+  localField: '_id',
+  foreignField: 'owner',
 });
 
 userSchema.pre('save', async function preSaveOperation(next) {

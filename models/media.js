@@ -3,6 +3,11 @@ const mongoose = require('mongoose');
 const mediaSchema = new mongoose.Schema({
 
   id: {
+    type: Number,
+    required: true,
+  },
+
+  type: {
     type: String,
     required: true,
   },
@@ -22,6 +27,11 @@ const mediaSchema = new mongoose.Schema({
     required: true,
   },
 
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'User',
+  },
 });
 
 const Media = mongoose.model('Media', mediaSchema);
