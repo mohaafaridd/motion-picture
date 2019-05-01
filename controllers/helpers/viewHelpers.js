@@ -1,9 +1,9 @@
 const axios = require('axios');
 
 // Maps titles to return an array of links
-const getLink = (id) => {
+const getLink = (id, type) => {
   // Returns non duplicated set of links
-  const link = `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.TMDB_API_KEY}&append_to_response=credits,videos,similar,keywords`;
+  const link = `https://api.themoviedb.org/3/${type}/${id}?api_key=${process.env.TMDB_API_KEY}&append_to_response=credits,videos,similar,keywords`;
   return link;
 };
 
@@ -16,14 +16,16 @@ const getData = obj => obj.data;
 const mapData = data => data
   .map(obj => ({
     id: obj.id,
-    title: obj.title,
+    // title for movies, original name for tv shows
+    title: obj.title ? obj.title : obj.original_name,
     trailer: (obj.videos.results.filter(video => video.type === 'Trailer'))[0],
     poster: obj.poster_path,
     overview: obj.overview,
     actors: obj.credits.cast,
     similar: obj.similar.results.map(similarMovie => ({
       id: similarMovie.id,
-      title: similarMovie.title,
+      // title for movies, original name for tv shows
+      title: similarMovie.title ? similarMovie.title : similarMovie.original_name,
       poster: similarMovie.poster_path,
     })),
   }));

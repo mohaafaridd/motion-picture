@@ -3,9 +3,9 @@ const viewHelpers = require('./helpers/viewHelpers');
 
 const view = async (req, res) => {
   try {
-    const { id } = req.query;
+    const { id, type } = req.query;
 
-    const link = viewHelpers.getLink(id);
+    const link = viewHelpers.getLink(id, type);
 
     const request = viewHelpers.mapRequests(link);
 
