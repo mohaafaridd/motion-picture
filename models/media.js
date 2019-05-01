@@ -12,47 +12,20 @@ const mediaSchema = new mongoose.Schema({
     required: true,
   },
 
-  year: {
-    type: Number,
-    required: true,
-  },
-
-  rated: {
+  overview: {
     type: String,
     required: true,
   },
 
-  runtime: {
-    type: Number,
-    required: true,
-  },
-
-  genres: [String],
-
-  actors: [String],
-
-  lang: {
+  poster: {
     type: String,
     required: true,
   },
 
-  rating: [{
-    source: {
-      type: String,
-    },
-    value: {
-      type: Number,
-    },
+  tags: [{
+    type: String,
   }],
 
-  type: {
-    type: String,
-    required: true,
-  },
-
-  seasons: {
-    type: Number,
-  },
 });
 
 const Media = mongoose.model('Media', mediaSchema);

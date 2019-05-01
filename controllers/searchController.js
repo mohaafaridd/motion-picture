@@ -12,26 +12,10 @@ const search = async (req, res) => {
     // Get media array
     const mediaArray = await searchHelper.getMediaArray(req.query);
 
-    // Get all titles
-    const titles = searchHelper.getTitles(mediaArray, type);
+    // Filtered data to fit the model
+    const filteredData = searchHelper.mapData(mediaArray);
 
-    const links = searchHelper.getLinks(titles);
-
-    if (links.length === 0) {
-      return res.status(404).send();
-    }
-
-    const requests = searchHelper.mapRequests(links);
-
-    const results = await Promise.all(requests);
-
-    const data = searchHelper.getData(results);
-
-    const filteredData = searchHelper.filterData(data);
-
-    const mappedData = searchHelper.mapData(filteredData);
-
-    return res.send(mappedData);
+    return res.send(filteredData);
   } catch (error) {
     return res.send(error);
   }
