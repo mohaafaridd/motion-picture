@@ -33,7 +33,7 @@ const postSignin = async (req, res) => {
     res.cookie('auth', token, { maxAge: process.env.EXP_DATE });
     res.status(200).redirect('/');
   } catch (error) {
-    res.status(400).send();
+    res.status(400).redirect('/user/signin');
   }
 };
 
