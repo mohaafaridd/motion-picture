@@ -60,8 +60,8 @@ const userSchema = new mongoose.Schema({
   }],
 });
 
-userSchema.virtual('favorite', {
-  ref: 'Media',
+userSchema.virtual('lists', {
+  ref: 'List',
   localField: '_id',
   foreignField: 'owner',
 });

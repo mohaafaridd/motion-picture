@@ -15,11 +15,11 @@ router.post('/signin', userControllers.signin);
 /* Sign out */
 router.post('/signout', auth, userControllers.signout);
 
-router.get('/me/favorite', auth, async (req, res) => {
+router.get('/me/lists', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
-    await user.populate('favorite').execPopulate();
-    res.send(user.favorite);
+    await user.populate('lists').execPopulate();
+    res.send(user.lists);
   } catch (error) {
     res.send(error);
   }

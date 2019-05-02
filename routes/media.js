@@ -11,12 +11,8 @@ router.get('/search', searchController);
 
 router.get('/:type/:id', viewController);
 
-router.post('/favorite', auth, async (req, res) => {
-  const media = new Media({
-    ...req.body,
-    owner: req.user._id,
-  });
-
+router.post('/add-to-list', auth, async (req, res) => {
+  const media = new Media(req.body);
   try {
     await media.save();
     res.status(201).send(media);
