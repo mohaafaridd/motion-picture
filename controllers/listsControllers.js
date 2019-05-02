@@ -18,6 +18,10 @@ const getTopMovies = async (req, res) => {
   }
 };
 
+const getAddList = (req, res) => {
+  res.render('lists/add');
+};
+
 const addToList = async (req, res) => {
   // req.body must contain owner
   const media = new Media(req.body);
@@ -79,4 +83,5 @@ module.exports = {
   postList,
   getList,
   getLists,
+  getAddList,
 };

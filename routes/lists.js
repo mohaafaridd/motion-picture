@@ -4,6 +4,8 @@ const auth = require('../middlewares/auth');
 
 const router = express.Router();
 
+router.get('/add', auth, listsController.getAddList);
+
 // Creates new list
 router.post('/', auth, listsController.postList);
 

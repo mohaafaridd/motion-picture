@@ -7,14 +7,20 @@ const listsController = require('../controllers/listsControllers');
 
 const router = express.Router();
 
+// Sign up page
+router.get('/signup', userControllers.getSignupPage);
+
 // Sign up a user.
-router.post('/signup', userControllers.signup);
+router.post('/signup', userControllers.postSignup);
+
+// Sign in page
+router.get('/signin', userControllers.getSigninPage);
 
 // Sign in a user
-router.post('/signin', userControllers.signin);
+router.post('/signin', userControllers.postSignin);
 
 // Sign out
-router.post('/signout', auth, userControllers.signout);
+router.post('/signout', auth, userControllers.postSignout);
 
 // Gets all lists
 router.get('/:nickname/lists/', viewAuth, listsController.getLists);
