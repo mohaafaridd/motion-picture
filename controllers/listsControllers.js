@@ -19,7 +19,7 @@ const getTopMovies = async (req, res) => {
 };
 
 const getAddList = (req, res) => {
-  res.render('lists/add');
+  res.render('lists/add', { name: req.user.name });
 };
 
 const addToList = async (req, res) => {

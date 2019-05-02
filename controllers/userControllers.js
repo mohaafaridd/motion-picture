@@ -7,16 +7,15 @@ const getSignupPage = async (req, res) => {
 
 // Sign up
 const postSignup = async (req, res) => {
-
   const user = new User(req.body);
-
   try {
     await user.save();
     const token = await user.generateAuthToken();
-    res.cookie('auth', token);
+    res.cookie('auth', token, { maxAge: process.env.EXP_DATE });
 
     res.status(201).redirect('/');
   } catch (error) {
+    console.log(error.message);
     res.status(400).redirect('/users/signup');
   }
 };
@@ -31,8 +30,7 @@ const postSignin = async (req, res) => {
   try {
     const user = await User.findByCredentials(req.body);
     const token = await user.generateAuthToken();
-    res.cookie('auth', token);
-
+    res.cookie('auth', token, { maxAge: process.env.EXP_DATE });
     res.status(200).redirect('/');
   } catch (error) {
     res.status(400).send();
@@ -44,8 +42,7 @@ const postSignout = async (req, res) => {
   try {
     req.user.tokens = req.user.tokens
       .filter(token => token.token !== req.token);
-
-    res.cookie.set('auth', { maxAge: Date.now() });
+    res.clearCookie('auth');
     await req.user.save();
     res.redirect('/');
   } catch (error) {
