@@ -1,6 +1,12 @@
 const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const listSchema = new mongoose.Schema({
+
+  public: {
+    type: Boolean,
+    required: true,
+  },
 
   name: {
     type: String,
@@ -21,6 +27,8 @@ listSchema.virtual('content', {
   localField: '_id',
   foreignField: 'owner',
 });
+
+listSchema.plugin(AutoIncrement, { inc_field: 'id' });
 
 const List = mongoose.model('List', listSchema);
 
