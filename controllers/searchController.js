@@ -11,12 +11,16 @@ const search = async (req, res) => {
     // Get media array
     const mediaArray = await searchHelper.getMediaArray({ type, title });
 
+    if (mediaArray.length === 0) {
+      throw new Error('Search error');
+    }
+
     // Filtered data to fit the model
     const filteredData = searchHelper.mapData(mediaArray);
 
     res.send(filteredData);
   } catch (error) {
-    res.send(error);
+    res.status(400).send(error);
   }
 };
 

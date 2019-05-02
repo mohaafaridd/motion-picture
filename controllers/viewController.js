@@ -21,7 +21,7 @@ const view = async (req, res) => {
 
     res.send(mappedData);
   } catch (error) {
-    res.send(error);
+    res.status(404).send();
   }
 };
 
