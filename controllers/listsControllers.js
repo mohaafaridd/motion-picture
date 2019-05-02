@@ -23,7 +23,7 @@ const addToList = async (req, res) => {
   const media = new Media(req.body);
   try {
     await media.save();
-    res.status(201).send(media);
+    res.status(200).send(media);
   } catch (e) {
     res.status(400).send(e);
   }
@@ -38,7 +38,7 @@ const postList = async (req, res) => {
 
     await list.save();
 
-    res.send(list);
+    res.status(201).send(list);
   } catch (error) {
     res.status(400).send();
   }
@@ -49,7 +49,8 @@ const getList = async (req, res) => {
     const { id, nickname } = req.params;
     const user = await User.findOne({ nickname });
     const list = await List.findOne({ id, owner: user._id });
-    if (!list.public && list.owner !== req.user._id) {
+
+    if (!list.public && list.owner.toString() !== req.user._id.toString()) {
       throw new Error();
     }
 
@@ -65,7 +66,7 @@ const getLists = async (req, res) => {
   const user = await User.findOne({ nickname });
   let lists = await List.find({ owner: user._id });
 
-  if (req.user._id !== user._id) {
+  if (req.user._id.toString() !== user._id.toString()) {
     lists = lists.filter(list => list.public);
   }
 

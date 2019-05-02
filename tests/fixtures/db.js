@@ -30,18 +30,75 @@ const userTwo = {
   }],
 };
 
+const listOneId = new mongoose.Types.ObjectId();
+const listOne = {
+  _id: listOneId,
+  name: 'list one',
+  public: true,
+};
+
+const listTwoId = new mongoose.Types.ObjectId();
+const listTwo = {
+  _id: listTwoId,
+  name: 'list two',
+  public: true,
+  owner: userOneId,
+};
+
+const listThreeId = new mongoose.Types.ObjectId();
+const listThree = {
+  _id: listThreeId,
+  name: 'list three',
+  public: false,
+  owner: userOneId,
+};
+
+const listFourId = new mongoose.Types.ObjectId();
+const listFour = {
+  _id: listFourId,
+  name: 'list four',
+  public: false,
+  owner: userTwoId,
+};
+
+const mediaOneId = new mongoose.Types.ObjectId();
+const mediaOne = {
+  _id: mediaOneId,
+  type: 'movie',
+  title: 'Life and Death',
+  overview: 'things may go wrong',
+  poster: 'xd.jpg',
+};
+
 const setupDatabase = async () => {
+  await List.counterReset('id', () => { });
   await User.deleteMany();
   await Media.deleteMany();
   await List.deleteMany();
   await new User(userOne).save();
   await new User(userTwo).save();
+  await new List(listTwo).save();
+  await new List(listThree).save();
+  await new List(listFour).save();
 };
 
 module.exports = {
   setupDatabase,
   userOneId,
   userOne,
+
   userTwoId,
   userTwo,
+
+  listOneId,
+  listOne,
+
+  listTwoId,
+  listTwo,
+
+  listThreeId,
+  listThree,
+
+  mediaOneId,
+  mediaOne,
 };
