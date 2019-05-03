@@ -4,6 +4,8 @@
 <p>{{this.overview}}</p>
 <img src="http://image.tmdb.org/t/p/w500{{this.poster}}" alt="{{this.title}} poster">
 
+{{#if ../isLogged}}
+{{#if ../hasList}}
 <form action="/media/add-to-list" method="post">
     <input type="hidden" name="type" value="{{../type}}">
     <input type="hidden" name="title" value="{{this.title}}">
@@ -18,5 +20,7 @@
 
     <button type="submit">Add to list</button>
 </form>
+{{/if}}
+{{/if}}
 
 {{/each}}

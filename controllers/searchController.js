@@ -5,6 +5,8 @@ const search = async (req, res) => {
   try {
     const { type, title } = req.query;
 
+    let isLogged;
+
     if ((type !== 'tv' && type !== 'movie') || title.trim() === '') {
       throw new Error('Search error');
     }
@@ -22,9 +24,21 @@ const search = async (req, res) => {
     let lists = [];
     if (req.user.name !== 'Anonymous') {
       lists = await listsHelpers.getListJSON(req);
+      isLogged = true;
+    } else {
+      isLogged = false;
     }
+
+    const hasList = lists.length !== 0;
+
     // res.send(filteredData);
-    res.render('search/results', { type, results: filteredData, options: lists });
+    res.render('search/results', {
+      type,
+      results: filteredData,
+      options: lists,
+      hasList,
+      isLogged,
+    });
   } catch (error) {
     res.status(400).send(error);
   }
