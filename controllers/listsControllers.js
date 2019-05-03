@@ -37,7 +37,6 @@ const addToList = async (req, res) => {
     }
     const media = new Media(req.body);
 
-
     await media.save();
     res.status(200).redirect(`/users/${req.user.nickname}/lists/${req.body.owner.id}`);
   } catch (e) {

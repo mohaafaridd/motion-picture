@@ -4,10 +4,16 @@
 <p>{{this.overview}}</p>
 <img src="http://image.tmdb.org/t/p/w500{{this.poster}}" alt="{{this.title}} poster">
 
+<form action="/media/{{../type}}/{{id}}" method="get">
+    <button type="submit">View {{type}}</button>
+</form>
+
 {{#if ../isLogged}}
 {{#if ../hasList}}
 <form action="/media/add-to-list" method="post">
     <input type="hidden" name="type" value="{{../type}}">
+    {{this.id}}
+    <input type="hidden" name="id" value="{{this.id}}">
     <input type="hidden" name="title" value="{{this.title}}">
     <input type="hidden" name="overview" value="{{this.overview}}">
     <input type="hidden" name="poster" value="{{this.poster}}">

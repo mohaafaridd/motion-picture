@@ -2,8 +2,12 @@
 <h2>{{list.name}}</h2>
 
 {{#each content}}
-<h2>{{this.title}}</h2>
-<p>{{this.overview}}</p>
-<img src="http://image.tmdb.org/t/p/w500{{this.poster}}" alt="{{this.title}} poster">
+<h2>{{title}}</h2>
+<p>{{overview}}</p>
+<img src="http://image.tmdb.org/t/p/w500{{poster}}" alt="{{title}} poster">
+
+<form action="/media/{{type}}/{{id}}" method="get">
+    <button type="submit">View {{type}}</button>
+</form>
 
 {{/each}}
