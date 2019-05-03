@@ -2,6 +2,7 @@ const searchHelper = require('./helpers/searchHelpers');
 const listsHelpers = require('./helpers/listsHelpers');
 
 const search = async (req, res) => {
+  console.log('here');
   try {
     const { type, title } = req.query;
 
