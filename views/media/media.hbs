@@ -1,0 +1,11 @@
+<h1>{{media.title}}</h1>
+<iframe width="640" height="480" src="https://www.youtube.com/embed/{{media.trailer.key}}">
+</iframe>
+
+<p>{{media.overview}}</p>
+
+{{#each media.actors}}
+<h4>{{name}}</h4>
+<h5>{{character}}</h5>
+<img src="http://image.tmdb.org/t/p/w500{{profile_path}}" alt="">
+{{/each}}
