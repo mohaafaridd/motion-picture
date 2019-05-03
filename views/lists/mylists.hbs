@@ -1,0 +1,7 @@
+<h1>{{name}}'s' lists</h1>
+{{#each lists}}
+
+<h1>{{this.name}}</h1>
+<a href="/users/{{owner}}/lists/{{this.id}}">Link</a>
+
+{{/each}}

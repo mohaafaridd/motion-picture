@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 const express = require('express');
 const viewAuth = require('../middlewares/viewAuth');
 
@@ -18,10 +19,8 @@ router.get('/', viewAuth, (req, res) => {
     ({ nickname, name } = user);
   }
 
-  console.log(nickname, name);
-
   res.render('index', {
-    title: 'Express',
+    title: 'Motion Picture',
     isAnonymous,
     name,
     nickname,

@@ -68,15 +68,30 @@ const getList = async (req, res) => {
 };
 
 const getLists = async (req, res) => {
-  const { nickname } = req.params;
-  const user = await User.findOne({ nickname });
-  let lists = await List.find({ owner: user._id });
+  try {
+    const { nickname } = req.params;
+    const user = await User.findOne({ nickname });
+    let lists = await List.find({ owner: user._id });
 
-  if (req.user._id.toString() !== user._id.toString()) {
-    lists = lists.filter(list => list.public);
+    if (req.user._id.toString() !== user._id.toString()) {
+      lists = lists.filter(list => list.public);
+    }
+
+    lists = lists.map((list) => {
+      return {
+        id: list.id,
+        name: list.name,
+        owner: nickname,
+        public: list.public,
+      };
+    });
+
+    console.log(user.name);
+
+    res.render('lists/mylists', { name: user.name, lists });
+  } catch (error) {
+    res.status(404);
   }
-
-  res.send(lists);
 };
 
 module.exports = {
