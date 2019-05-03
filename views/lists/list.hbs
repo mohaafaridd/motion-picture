@@ -10,4 +10,12 @@
     <button type="submit">View {{type}}</button>
 </form>
 
+{{#if ../isOwner}}
+<form action="/media/remove-from-list" method="post">
+    <input type="hidden" name="listid" value="{{../list.id}}">
+    <input type="hidden" name="mediaid" value="{{id}}">
+    <button type="submit">Delete from list</button>
+</form>
+{{/if}}
+
 {{/each}}

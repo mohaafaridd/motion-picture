@@ -66,13 +66,19 @@ const getList = async (req, res) => {
     const { id, nickname } = req.params;
     const user = await User.findOne({ nickname });
     const list = await List.findOne({ id, owner: user._id });
-
+    const isOwner = list.owner.toString() === req.user._id.toString();
     if (!list.public && list.owner.toString() !== req.user._id.toString()) {
       throw new Error();
     }
 
     await list.populate('content').execPopulate();
-    res.render('lists/list', { user, list, content: list.content });
+    // res.send(list.content);
+    res.render('lists/list', {
+      user,
+      list,
+      content: list.content,
+      isOwner,
+    });
   } catch (error) {
     res.status(404).send();
   }
@@ -81,7 +87,6 @@ const getList = async (req, res) => {
 const getLists = async (req, res) => {
   try {
     const lists = await listsHelpers.getListJSON(req);
-
     res.render('lists/mylists', { name: req.user.name, lists });
   } catch (error) {
     res.status(404);
