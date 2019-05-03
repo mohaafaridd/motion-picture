@@ -57,7 +57,7 @@ const postList = async (req, res) => {
 
     res.status(201).redirect(`/users/${req.user.nickname}/lists`);
   } catch (error) {
-    res.status(400).send();
+    res.status(400).redirect(`/users/${req.user.nickname}/lists`);
   }
 };
 
@@ -80,16 +80,18 @@ const getList = async (req, res) => {
       isOwner,
     });
   } catch (error) {
-    res.status(404).send();
+    res.status(404).redirect(`/users/${req.user.nickname}/lists`);
   }
 };
 
 const getLists = async (req, res) => {
   try {
+    const { nickname } = req.params;
+    const user = await User.findOne({ nickname });
     const lists = await listsHelpers.getListJSON(req);
-    res.render('lists/mylists', { name: req.user.name, lists });
+    res.render('lists/mylists', { name: user.name, lists });
   } catch (error) {
-    res.status(404);
+    res.status(404).redirect('/');
   }
 };
 
@@ -106,7 +108,7 @@ const deleteList = async (req, res) => {
     // await Promise.all(content.forEach(media => media.remove()));
     res.redirect(`/users/${req.user.nickname}/lists`);
   } catch (error) {
-    res.send(error.message);
+    res.status(400).redirect(`/users/${req.user.nickname}/lists`);
   }
 };
 
