@@ -1,0 +1,22 @@
+{{#each results}}
+
+<h2>{{this.title}}</h2>
+<p>{{this.overview}}</p>
+<img src="http://image.tmdb.org/t/p/w500{{this.poster}}" alt="{{this.title}} poster">
+
+<form action="/media/add-to-list" method="post">
+    <input type="hidden" name="type" value="{{../type}}">
+    <input type="hidden" name="title" value="{{this.title}}">
+    <input type="hidden" name="overview" value="{{this.overview}}">
+    <input type="hidden" name="poster" value="{{this.poster}}">
+
+    <select name="owner" id="lists">
+        {{#each ../options}}
+        <option value="{{this.name}}">{{this.name}}</option>
+        {{/each}}
+    </select>
+
+    <button type="submit">Add to list</button>
+</form>
+
+{{/each}}

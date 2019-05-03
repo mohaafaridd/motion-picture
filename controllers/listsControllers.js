@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 const axios = require('axios');
 const { mapData } = require('./helpers/searchHelpers');
+const listsHelpers = require('./helpers/listsHelpers');
 const Media = require('../models/media');
 const List = require('../models/list');
 const User = require('../models/user');
@@ -24,10 +25,11 @@ const getAddList = (req, res) => {
 
 const addToList = async (req, res) => {
   // req.body must contain owner
-  const media = new Media(req.body);
   try {
+    req.body.owner = await List.findOne({ name: req.body.owner });
+    const media = new Media(req.body);
     await media.save();
-    res.status(200).send(media);
+    res.status(200).redirect(`/users/${req.user.nickname}/lists/${req.body.owner.id}`);
   } catch (e) {
     res.status(400).send(e);
   }
@@ -44,7 +46,7 @@ const postList = async (req, res) => {
 
     await list.save();
 
-    res.status(201).redirect('/');
+    res.status(201).redirect(`/users/${req.user.nickname}/lists`);
   } catch (error) {
     res.status(400).send();
   }
@@ -69,26 +71,9 @@ const getList = async (req, res) => {
 
 const getLists = async (req, res) => {
   try {
-    const { nickname } = req.params;
-    const user = await User.findOne({ nickname });
-    let lists = await List.find({ owner: user._id });
+    const lists = await listsHelpers.getListJSON(req);
 
-    if (req.user._id.toString() !== user._id.toString()) {
-      lists = lists.filter(list => list.public);
-    }
-
-    lists = lists.map((list) => {
-      return {
-        id: list.id,
-        name: list.name,
-        owner: nickname,
-        public: list.public,
-      };
-    });
-
-    console.log(user.name);
-
-    res.render('lists/mylists', { name: user.name, lists });
+    res.render('lists/mylists', { name: req.user.name, lists });
   } catch (error) {
     res.status(404);
   }

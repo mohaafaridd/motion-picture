@@ -1,4 +1,5 @@
 const searchHelper = require('./helpers/searchHelpers');
+const listsHelpers = require('./helpers/listsHelpers');
 
 const search = async (req, res) => {
   try {
@@ -18,7 +19,12 @@ const search = async (req, res) => {
     // Filtered data to fit the model
     const filteredData = searchHelper.mapData(mediaArray);
 
-    res.send(filteredData);
+    let lists = [];
+    if (req.user.name !== 'Anonymous') {
+      lists = await listsHelpers.getListJSON(req);
+    }
+    // res.send(filteredData);
+    res.render('search/results', { type, results: filteredData, options: lists });
   } catch (error) {
     res.status(400).send(error);
   }
