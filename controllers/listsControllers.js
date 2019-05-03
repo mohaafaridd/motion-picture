@@ -89,6 +89,19 @@ const getLists = async (req, res) => {
   }
 };
 
+const deleteList = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const list = await List.findOne({ id, owner: req.user._id });
+    // const list = await req.user.remove();
+    await list.remove();
+    res.redirect(`/users/${req.user.nickname}/lists`);
+  } catch (error) {
+    res.send(error.message);
+  }
+};
+
 module.exports = {
   getTopMovies,
   addToList,
@@ -96,4 +109,5 @@ module.exports = {
   getList,
   getLists,
   getAddList,
+  deleteList,
 };

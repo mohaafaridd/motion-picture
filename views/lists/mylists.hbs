@@ -4,4 +4,8 @@
 <h1>{{this.name}}</h1>
 <a href="/users/{{owner}}/lists/{{this.id}}">Link</a>
 
+<form action="/lists/delete/{{this.id}}" method="post">
+    <button>Remove</button>
+</form>
+
 {{/each}}
