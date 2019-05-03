@@ -63,7 +63,8 @@ const getList = async (req, res) => {
     }
 
     await list.populate('content').execPopulate();
-    res.send({ list, content: list.content });
+    // res.send({ list, content: list.content });
+    res.render('lists/list', { user, list, content: list.content });
   } catch (error) {
     res.status(404).send();
   }
