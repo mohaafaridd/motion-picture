@@ -17,9 +17,10 @@ const view = async (req, res) => {
 
     const data = viewHelpers.getData(result);
 
-    const mappedData = viewHelpers.mapData([data])[0];
+    const mappedData = viewHelpers.mapData([data], type)[0];
 
-    res.render('media/media', { media: mappedData });
+    // res.send(mappedData);
+    res.render('media/media', { media: mappedData, type });
   } catch (error) {
     res.status(404).send();
   }

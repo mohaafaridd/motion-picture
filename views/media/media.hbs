@@ -2,10 +2,19 @@
 <iframe width="640" height="480" src="https://www.youtube.com/embed/{{media.trailer.key}}">
 </iframe>
 
+
 <p>{{media.overview}}</p>
 
 {{#each media.actors}}
 <h4>{{name}}</h4>
 <h5>{{character}}</h5>
 <img src="http://image.tmdb.org/t/p/w500{{profile_path}}" alt="">
+{{/each}}
+
+{{#each media.similar}}
+<h4>{{title}}</h4>
+<img src="http://image.tmdb.org/t/p/w500{{poster}}" alt="">
+<form action="/media/{{../type}}/{{id}}" method="get">
+    <button type="submit">View {{type}}</button>
+</form>
 {{/each}}

@@ -13,8 +13,9 @@ const mapRequests = link => axios.get(link);
 // Gets data property from each object
 const getData = obj => obj.data;
 
-const mapData = data => data
+const mapData = (data, type) => data
   .map(obj => ({
+    type,
     id: obj.id,
     // title for movies, original name for tv shows
     title: obj.title ? obj.title : obj.original_name,
