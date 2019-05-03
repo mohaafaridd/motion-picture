@@ -8,10 +8,22 @@
 <a href="/users/signup">Sign up</a>
 <a href="/users/signin">Sign in</a>
 {{else}}
-
 <form action="/users/signout" method="post">
     <button type="submit">Logout</button>
 </form>
 <a href="/users/{{nickname}}/lists">My lists</a>
 <a href="/lists/add">Add List</a>
 {{/if}}
+
+<form action="/media/search" method="get">
+
+    <input type="text" name="title">
+
+    <select name="type" id="type">
+        <option value="tv">TV Shows</option>
+        <option value="tv">Movies</option>
+    </select>
+
+    <button type="submit">Search</button>
+
+</form>
