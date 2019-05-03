@@ -15,7 +15,6 @@ const postSignup = async (req, res) => {
 
     res.status(201).redirect('/');
   } catch (error) {
-    console.log(error.message);
     res.status(400).redirect('/users/signup');
   }
 };
