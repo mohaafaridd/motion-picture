@@ -27,11 +27,21 @@ const addToList = async (req, res) => {
   // req.body must contain owner
   try {
     req.body.owner = await List.findOne({ name: req.body.owner });
+    const duplicate = await Media.findOne({
+      title: req.body.title,
+      owner: req.body.owner,
+    });
+
+    if (duplicate) {
+      throw new Error('duplicated movie in same list');
+    }
     const media = new Media(req.body);
+
+
     await media.save();
     res.status(200).redirect(`/users/${req.user.nickname}/lists/${req.body.owner.id}`);
   } catch (e) {
-    res.status(400).send(e);
+    res.status(400).send(e.message);
   }
 };
 
@@ -63,7 +73,6 @@ const getList = async (req, res) => {
     }
 
     await list.populate('content').execPopulate();
-    // res.send({ list, content: list.content });
     res.render('lists/list', { user, list, content: list.content });
   } catch (error) {
     res.status(404).send();
