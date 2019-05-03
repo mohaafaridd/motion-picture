@@ -8,11 +8,12 @@
 <a href="/users/signup">Sign up</a>
 <a href="/users/signin">Sign in</a>
 {{else}}
+<a href="/users/{{nickname}}">Profile</a>
+<a href="/users/{{nickname}}/lists">My lists</a>
+<a href="/lists/add">Add List</a>
 <form action="/users/signout" method="post">
     <button type="submit">Logout</button>
 </form>
-<a href="/users/{{nickname}}/lists">My lists</a>
-<a href="/lists/add">Add List</a>
 {{/if}}
 
 <form action="/media/search" method="get">

@@ -5,6 +5,7 @@ const viewAuth = require('../middlewares/viewAuth');
 const logAuth = require('../middlewares/logAuth');
 const userControllers = require('../controllers/userControllers');
 const listsController = require('../controllers/listsControllers');
+const User = require('../models/user');
 
 const router = express.Router();
 
@@ -22,6 +23,13 @@ router.post('/signin', logAuth, userControllers.postSignin);
 
 // Sign out
 router.post('/signout', auth, userControllers.postSignout);
+
+// Gets user profile
+router.get('/:nickname', viewAuth, async (req, res) => {
+  const { nickname } = req.params;
+  const user = await User.findOne({ nickname });
+  res.render('user/profile', { user });
+});
 
 // Gets all lists
 router.get('/:nickname/lists/', viewAuth, listsController.getLists);
