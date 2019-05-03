@@ -3,11 +3,15 @@
 
 <h1>Welcome {{name}}</h1>
 
+
+{{#if isAnonymous}}
 <a href="/users/signup">Sign up</a>
 <a href="/users/signin">Sign in</a>
+{{else}}
 
 <form action="/users/signout" method="post">
     <button type="submit">Logout</button>
 </form>
-
+<a href="/users/{{nickname}}/lists">My lists</a>
 <a href="/lists/add">Add List</a>
+{{/if}}

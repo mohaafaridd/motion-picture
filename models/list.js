@@ -6,6 +6,7 @@ const listSchema = new mongoose.Schema({
   public: {
     type: Boolean,
     required: true,
+    default: false,
   },
 
   name: {

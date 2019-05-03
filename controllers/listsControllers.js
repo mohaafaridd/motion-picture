@@ -35,6 +35,8 @@ const addToList = async (req, res) => {
 
 const postList = async (req, res) => {
   try {
+    req.body.public = !!req.body.public;
+
     const list = new List({
       ...req.body,
       owner: req.user._id,
@@ -42,7 +44,7 @@ const postList = async (req, res) => {
 
     await list.save();
 
-    res.status(201).send(list);
+    res.status(201).redirect('/');
   } catch (error) {
     res.status(400).send();
   }
@@ -59,7 +61,7 @@ const getList = async (req, res) => {
     }
 
     await list.populate('content').execPopulate();
-    res.send(list.content);
+    res.send({ list, content: list.content });
   } catch (error) {
     res.status(404).send();
   }
