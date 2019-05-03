@@ -94,8 +94,12 @@ const deleteList = async (req, res) => {
 
   try {
     const list = await List.findOne({ id, owner: req.user._id });
-    // const list = await req.user.remove();
+    const content = await Media.find({ owner: list._id });
+    const deletePromises = content.map(media => media.remove());
+    await Promise.all(deletePromises);
     await list.remove();
+    // await content.forEach(media => media.remove);
+    // await Promise.all(content.forEach(media => media.remove()));
     res.redirect(`/users/${req.user.nickname}/lists`);
   } catch (error) {
     res.send(error.message);
