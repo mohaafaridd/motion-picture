@@ -1,9 +1,31 @@
-<form action="/lists/" method="post">
+<div class="container d-flex flex-column justify-content-center full-height">
 
-    <input type="text" name="name" placeholder="list name...">
+    <form action="/lists/" method="post">
+        <div class="card border rounded">
+            <div class="card-header bg-primary text-white">
+                Add a new list
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="listname">List name</label>
+                    <input type="text" class="form-control" id="listname" name="name" placeholder="List name...">
+                </div>
 
-    <label for="public">public list</label>
-    <input type="checkbox" name="public" id="public">
+                <div class="form-group">
+                    <label for="listdescription">List description</label>
+                    <textarea class="form-control" name="description" id="listdescription" cols="30" rows="10"
+                        placeholder="List description..."></textarea>
+                </div>
 
-    <button type="submit">Add list</button>
-</form>
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="checkbox" name="public">
+                    <label class="custom-control-label" for="checkbox">Public list</label>
+                </div>
+
+                <button class="btn btn-success mt-3" type="submit">Add list</button>
+            </div>
+        </div>
+
+    </form>
+
+</div>

@@ -21,7 +21,7 @@ const getTopMovies = async (req, res) => {
 
 const getAddList = (req, res) => {
   try {
-    const user = req;
+    const { user } = req;
     res.render('lists/add', { user });
   } catch (error) {
     res.redirect('/', 400);
@@ -59,7 +59,6 @@ const postList = async (req, res) => {
     });
 
     await list.save();
-
     res.status(201).redirect(`/users/${req.user.nickname}/lists`);
   } catch (error) {
     res.status(400).redirect(`/users/${req.user.nickname}/lists`);
@@ -96,7 +95,12 @@ const getLists = async (req, res) => {
     const user = await User.findOne({ nickname });
     const lists = await listsHelpers.getListJSON(req, 'params');
     const isOwner = req.user._id.toString() === user._id.toString();
-    res.render('lists/mylists', { name: user.name, lists, isOwner, user: req.user });
+    res.render('lists/mylists', {
+      name: user.name,
+      lists,
+      isOwner,
+      user: req.user,
+    });
   } catch (error) {
     res.status(404).redirect('/');
   }
@@ -111,8 +115,6 @@ const deleteList = async (req, res) => {
     const deletePromises = content.map(media => media.remove());
     await Promise.all(deletePromises);
     await list.remove();
-    // await content.forEach(media => media.remove);
-    // await Promise.all(content.forEach(media => media.remove()));
     res.redirect(`/users/${req.user.nickname}/lists`);
   } catch (error) {
     res.status(400).redirect(`/users/${req.user.nickname}/lists`);

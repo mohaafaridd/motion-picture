@@ -5,6 +5,10 @@
   font-family: 'Open Sans', sans-serif;
 }
 
+body, html {
+  height: 100%;
+}
+
 .custom-select{
   appearance: none;
   -webkit-appearance: none;
@@ -33,4 +37,8 @@ textarea::-webkit-scrollbar-thumb {
 
 .media-section{
   background: #E5E5E5;
+}
+
+.full-height{
+  min-height: 100%;
 }

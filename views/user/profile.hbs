@@ -1,3 +1,38 @@
-<h1>{{profile.name}}</h1>
-<h3>@{{profile.nickname}}</h3>
-<a href="/users/{{profile.nickname}}/lists">{{profile.name}} lists</a>
+<div class="container">
+
+    <div class="card mb-3">
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                <img src="{{profile.picture}}" class="card-img" alt="{{profile.name}} profile picture">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">{{profile.name}}</h5>
+                    <h6>@{{profile.nickname}}</h6>
+                    <p class="card-text">{{profile.about}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="my-lists">
+        {{#each lists}}
+
+        <h1>{{this.name}}</h1>
+        <a href="/users/{{owner}}/lists/{{this.id}}">Link</a>
+
+        <p>{{this.description}}</p>
+        {{#if ../isOwner}}
+        <form action="/lists/delete/{{this.id}}" method="post">
+            <button>Remove</button>
+        </form>
+
+        <form action="/lists/edit/{{this.id}}/" method="get">
+            <input type="hidden" name="id" value="{{this.id}}">
+            <button type="submit">Edit List</button>
+        </form>
+        {{/if}}
+
+        {{/each}}
+    </div>
+</div>

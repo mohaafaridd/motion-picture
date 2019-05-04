@@ -16,6 +16,7 @@ const getListJSON = async (req, source) => {
     name: list.name,
     owner: nickname,
     public: list.public,
+    description: list.description,
   }));
 
   return lists;
