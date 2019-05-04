@@ -6,6 +6,7 @@ const User = require('../models/user');
 
 const router = express.Router();
 
+
 // Add list page
 router.get('/add', auth, listsController.getAddList);
 
@@ -14,8 +15,9 @@ router.post('/', auth, listsController.postList);
 
 router.get('/edit/:id/', auth, async (req, res) => {
   const { id } = req.params;
+  const { user } = req;
   const list = await List.findOne({ id });
-  res.render('lists/edit', { list });
+  res.render('lists/edit', { list, user });
 });
 
 router.post('/edit/:id', auth, async (req, res) => {

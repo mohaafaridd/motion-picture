@@ -2,12 +2,13 @@ const User = require('../models/user');
 
 // Sign up page
 const getSignupPage = async (req, res) => {
-  res.render('user/signup');
+  res.render('user/signup', { user: req.user });
 };
 
 // Sign up
 const postSignup = async (req, res) => {
   const user = new User(req.body);
+
   try {
     await user.save();
     const token = await user.generateAuthToken();
@@ -21,7 +22,7 @@ const postSignup = async (req, res) => {
 
 // Sign up page
 const getSigninPage = async (req, res) => {
-  res.render('user/signin');
+  res.render('user/signin', { user: req.user });
 };
 
 // Sign in

@@ -5,6 +5,8 @@ const view = async (req, res) => {
   try {
     const { id, type } = req.params;
 
+    const { user } = req;
+
     if ((type !== 'tv' && type !== 'movie') || id.trim() === '') {
       throw new Error('Search error');
     }
@@ -20,7 +22,7 @@ const view = async (req, res) => {
     const mappedData = viewHelpers.mapData([data], type)[0];
 
     // res.send(mappedData);
-    res.render('media/media', { media: mappedData, type });
+    res.render('media/media', { media: mappedData, type, user });
   } catch (error) {
     res.status(404).redirect('/');
   }

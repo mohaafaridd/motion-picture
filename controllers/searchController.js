@@ -4,13 +4,11 @@ const listsHelpers = require('./helpers/listsHelpers');
 const search = async (req, res) => {
   try {
     const { type, title } = req.query;
-
-    let isLogged;
+    const { user } = req;
 
     if ((type !== 'tv' && type !== 'movie') || title.trim() === '') {
       throw new Error('Search error');
     }
-
 
     // Get media array
     const mediaArray = await searchHelper.getMediaArray({ type, title });
@@ -22,13 +20,7 @@ const search = async (req, res) => {
     // Filtered data to fit the model
     const filteredData = searchHelper.mapData(mediaArray);
 
-    let lists = [];
-    if (req.user.name !== 'Anonymous') {
-      lists = await listsHelpers.getListJSON(req, 'user');
-      isLogged = true;
-    } else {
-      isLogged = false;
-    }
+    const lists = user.isAnonymous ? [] : await listsHelpers.getListJSON(req, 'user');
 
     const hasList = lists.length !== 0;
 
@@ -38,7 +30,8 @@ const search = async (req, res) => {
       results: filteredData,
       options: lists,
       hasList,
-      isLogged,
+      isLogged: !user.isAnonymous,
+      user,
     });
   } catch (error) {
     res.status(400).redirect('/');

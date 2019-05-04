@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 const jwt = require('jsonwebtoken');
+const anonymous = require('../controllers/anonymous');
 const User = require('../models/user');
 
 const auth = async (req, res, next) => {
@@ -17,7 +18,7 @@ const auth = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    req.user = { _id: 'anonymous', name: 'Anonymous' };
+    req.user = anonymous();
     next();
   }
 };

@@ -21,7 +21,8 @@ const getTopMovies = async (req, res) => {
 
 const getAddList = (req, res) => {
   try {
-    res.render('lists/add', { name: req.user.name });
+    const user = req;
+    res.render('lists/add', { user });
   } catch (error) {
     res.redirect('/', 400);
   }
@@ -68,8 +69,8 @@ const postList = async (req, res) => {
 const getList = async (req, res) => {
   try {
     const { id, nickname } = req.params;
-    const user = await User.findOne({ nickname });
-    const list = await List.findOne({ id, owner: user._id });
+    const owner = await User.findOne({ nickname });
+    const list = await List.findOne({ id, owner: owner._id });
     const isOwner = list.owner.toString() === req.user._id.toString();
     if (!list.public && list.owner.toString() !== req.user._id.toString()) {
       throw new Error();
@@ -78,10 +79,11 @@ const getList = async (req, res) => {
     await list.populate('content').execPopulate();
     // res.send(list.content);
     res.render('lists/list', {
-      user,
+      owner,
       list,
       content: list.content,
       isOwner,
+      user: req.user,
     });
   } catch (error) {
     res.status(404).redirect(`/users/${req.user.nickname}/lists`);
@@ -94,7 +96,7 @@ const getLists = async (req, res) => {
     const user = await User.findOne({ nickname });
     const lists = await listsHelpers.getListJSON(req, 'params');
     const isOwner = req.user._id.toString() === user._id.toString();
-    res.render('lists/mylists', { name: user.name, lists, isOwner });
+    res.render('lists/mylists', { name: user.name, lists, isOwner, user: req.user });
   } catch (error) {
     res.status(404).redirect('/');
   }
@@ -126,10 +128,8 @@ const deleteFromList = async (req, res) => {
 
     await media.remove();
     res.redirect(`/users/${req.user.nickname}/lists`);
-
   } catch (error) {
     res.redirect('/');
-
   }
 };
 

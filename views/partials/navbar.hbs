@@ -27,7 +27,7 @@
         </button>
         <div class="dropdown-menu">
             <!-- Dropdown menu links -->
-            {{#if isAnonymous}}
+            {{#if user.isAnonymous}}
             <a class="dropdown-item" href="/users/signup">Sign up</a>
             <a class="dropdown-item" href="/users/signin">Sign in</a>
             {{else}}

@@ -8,9 +8,10 @@ const viewAuth = require('../middlewares/viewAuth');
 
 const router = express.Router();
 
+
 router.get('/search', viewAuth, searchController);
 
-router.get('/:type/:id', viewController);
+router.get('/:type/:id', viewAuth, viewController);
 
 router.post('/add-to-list', auth, listsController.addToList);
 

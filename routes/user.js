@@ -27,8 +27,9 @@ router.post('/signout', auth, userControllers.postSignout);
 // Gets user profile
 router.get('/:nickname', viewAuth, async (req, res) => {
   const { nickname } = req.params;
-  const user = await User.findOne({ nickname });
-  res.render('user/profile', { user });
+  const profile = await User.findOne({ nickname });
+  const { user } = req;
+  res.render('user/profile', { profile, user });
 });
 
 // Gets all lists

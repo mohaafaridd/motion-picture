@@ -8,20 +8,8 @@ const router = express.Router();
 router.get('/', viewAuth, (req, res) => {
   const { user } = req;
 
-  let isAnonymous;
-  let nickname = 'Anonymous';
-  let name = 'Anonymous';
-
-  if (user._id === 'anonymous') {
-    isAnonymous = true;
-  } else {
-    isAnonymous = false;
-    ({ nickname, name } = user);
-  }
-
   res.render('index', {
     title: 'Motion Picture',
-    isAnonymous,
     user,
   });
 });
