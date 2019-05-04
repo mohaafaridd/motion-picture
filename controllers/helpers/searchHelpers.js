@@ -2,6 +2,7 @@ const axios = require('axios');
 
 // Returns array of undetailed media array
 const getMediaArray = async ({ title, type }) => {
+  console.log('here lol');
   const encoded = encodeURIComponent(title);
   const URL = `https://api.themoviedb.org/3/search/${type}?api_key=${process.env.TMDB_API_KEY}&query=${encoded}`;
   const response = await axios.get(URL);

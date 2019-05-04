@@ -1,30 +1,55 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
+<div class="container">
 
-<h1>Welcome {{user.name}}</h1>
+    <h2>Popular Now</h2>
+    <div class="row mx-auto">
 
+        {{#each popular}}
 
-{{#if user.isAnonymous}}
-<a href="/users/signup">Sign up</a>
-<a href="/users/signin">Sign in</a>
-{{else}}
-<a href="/users/{{user.nickname}}">Profile</a>
-<a href="/users/{{user.nickname}}/lists">My lists</a>
-<a href="/lists/add">Add List</a>
-<form action="/users/signout" method="post">
-    <button type="submit">Logout</button>
-</form>
-{{/if}}
+        <div class="col-md-4 p-2">
+            <div class="card">
+                <img src="http://image.tmdb.org/t/p/w500{{this.poster}}" class="card-img-top"
+                    alt="{{this.title}} poster">
+                <div class="card-body">
 
-<form action="/media/search" method="get">
+                    <form action="/media/{{this.type}}/{{id}}" method="get">
+                        <button class="btn btn-outline-dark w-100 card-title" type="submit">
+                            <h5 class="card-title m-0">{{this.title}}</h5>
+                            {{!-- {{this.title}} --}}
+                        </button>
+                    </form>
 
-    <input type="text" name="title">
+                    <textarea class="form-control" name="overview" id="overview" cols="30" rows="10" readonly>{{this.overview}}
+                    </textarea>
 
-    <select name="type" id="type">
-        <option value="movie">Movies</option>
-        <option value="tv">TV Shows</option>
-    </select>
+                    {{#if ../isLogged}}
+                    {{#if ../hasList}}
+                    <form class="mt-2" action="/media/add-to-list" method="post">
+                        <div class="input-group">
+                            <input type="hidden" name="type" value="{{this.type}}">
+                            <input type="hidden" name="id" value="{{this.id}}">
+                            <input type="hidden" name="title" value="{{this.title}}">
+                            <input type="hidden" name="overview" value="{{this.overview}}">
+                            <input type="hidden" name="poster" value="{{this.poster}}">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <select class="custom-select" name="owner" id="lists">
+                                    {{#each ../options}}
+                                    <option value="{{this.name}}">{{this.name}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-success w-100" type="submit"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                    {{/if}}
+                    {{/if}}
+                </div>
+            </div>
+        </div>
 
-    <button type="submit">Search</button>
-
-</form>
+        {{/each}}
+    </div>
+</div>

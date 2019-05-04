@@ -44,6 +44,6 @@ router.post('/edit/:id', auth, async (req, res) => {
 router.post('/delete/:id', auth, listsController.deleteList);
 
 // Gets top movies page
-router.get('/top', listsController.getTopMovies);
+router.get('/pop', listsController.getTopMovies);
 
 module.exports = router;
