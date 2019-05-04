@@ -10,3 +10,18 @@
   -webkit-appearance: none;
   -moz-appearance: none;
 }
+
+textarea {
+  resize: none;
+}
+
+textarea::-webkit-scrollbar {
+  width: 7px;
+  background-color: #F5F5F5; 
+}
+
+textarea::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-color: #4285F4; 
+}
