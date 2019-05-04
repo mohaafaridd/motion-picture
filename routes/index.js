@@ -22,8 +22,7 @@ router.get('/', viewAuth, (req, res) => {
   res.render('index', {
     title: 'Motion Picture',
     isAnonymous,
-    name,
-    nickname,
+    user,
   });
 });
 

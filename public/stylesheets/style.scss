@@ -1,12 +1,12 @@
-body{
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+@import "node_modules/bootstrap/scss/bootstrap";
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+*{
+  font-family: 'Open Sans', sans-serif;
 }
 
-a{
-  color: #00B7FF;
-  display: block;
-  font-size: 20px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+.custom-select{
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }

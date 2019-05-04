@@ -1,0 +1,45 @@
+<div class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="/">Motion Picture</a>
+
+    {{!-- Search box --}}
+    <form class="form-inline m-auto" action="/media/search" method="get">
+        <div class="input-group mr-sm-2">
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+            <input class="form-control" type="text" name="title" id="title" placeholder="Search...">
+        </div>
+
+        <select class="custom-select" name="type" id="type">
+            <option value="movie">Movies</option>
+            <option value="tv">TV Shows</option>
+        </select>
+
+        <input type="submit" />
+
+    </form>
+
+    <div class="btn-group dropleft">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+            <i class="fas fa-user"></i>
+        </button>
+        <div class="dropdown-menu">
+            <!-- Dropdown menu links -->
+            {{#if isAnonymous}}
+            <a class="dropdown-item" href="/users/signup">Sign up</a>
+            <a class="dropdown-item" href="/users/signin">Sign in</a>
+            {{else}}
+            <a class="dropdown-item" href="/users/{{user.nickname}}">Profile</a>
+            <a class="dropdown-item" href="/users/{{user.nickname}}/lists">My lists</a>
+            <a class="dropdown-item" href="/lists/add">Add List</a>
+            <form action="/users/signout" method="post">
+                <button class="dropdown-item btn btn-danger" type="submit">Logout</button>
+            </form>
+            {{/if}}
+
+        </div>
+    </div>
+
+</div>
