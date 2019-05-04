@@ -22,7 +22,11 @@ const mapData = (data, type) => data
     trailer: (obj.videos.results.filter(video => video.type === 'Trailer'))[0],
     poster: obj.poster_path,
     overview: obj.overview,
-    actors: obj.credits.cast,
+    actors: obj.credits.cast.sort((a, b) => {
+      const popA = (a.order);
+      const popB = (b.order);
+      return popA - popB;
+    }),
     similar: obj.similar.results.map(similarMovie => ({
       id: similarMovie.id,
       // title for movies, original name for tv shows
