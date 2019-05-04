@@ -22,7 +22,7 @@ const view = async (req, res) => {
     // res.send(mappedData);
     res.render('media/media', { media: mappedData, type });
   } catch (error) {
-    res.status(404).send();
+    res.status(404).redirect('/');
   }
 };
 

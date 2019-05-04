@@ -2,8 +2,8 @@
 const List = require('../../models/list');
 const User = require('../../models/user');
 
-const getListJSON = async (req) => {
-  const { nickname } = req.params;
+const getListJSON = async (req, source) => {
+  const { nickname } = req[source];
   const user = await User.findOne({ nickname });
   let lists = await List.find({ owner: user._id });
 

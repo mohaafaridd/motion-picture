@@ -20,7 +20,11 @@ const getTopMovies = async (req, res) => {
 };
 
 const getAddList = (req, res) => {
-  res.render('lists/add', { name: req.user.name });
+  try {
+    res.render('lists/add', { name: req.user.name });
+  } catch (error) {
+    res.redirect('/', 400);
+  }
 };
 
 const addToList = async (req, res) => {
@@ -88,8 +92,9 @@ const getLists = async (req, res) => {
   try {
     const { nickname } = req.params;
     const user = await User.findOne({ nickname });
-    const lists = await listsHelpers.getListJSON(req);
-    res.render('lists/mylists', { name: user.name, lists });
+    const lists = await listsHelpers.getListJSON(req, 'params');
+    const isOwner = req.user._id.toString() === user._id.toString();
+    res.render('lists/mylists', { name: user.name, lists, isOwner });
   } catch (error) {
     res.status(404).redirect('/');
   }
@@ -112,6 +117,22 @@ const deleteList = async (req, res) => {
   }
 };
 
+const deleteFromList = async (req, res) => {
+  try {
+    const { listid, mediaid } = req.body;
+
+    const list = await List.findOne({ id: listid });
+    const media = await Media.findOne({ owner: list._id, id: mediaid });
+
+    await media.remove();
+    res.redirect(`/users/${req.user.nickname}/lists`);
+
+  } catch (error) {
+    res.redirect('/');
+
+  }
+};
+
 module.exports = {
   getTopMovies,
   addToList,
@@ -120,4 +141,5 @@ module.exports = {
   getLists,
   getAddList,
   deleteList,
+  deleteFromList,
 };

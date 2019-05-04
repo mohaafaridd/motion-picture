@@ -11,6 +11,7 @@ const search = async (req, res) => {
       throw new Error('Search error');
     }
 
+
     // Get media array
     const mediaArray = await searchHelper.getMediaArray({ type, title });
 
@@ -23,7 +24,7 @@ const search = async (req, res) => {
 
     let lists = [];
     if (req.user.name !== 'Anonymous') {
-      lists = await listsHelpers.getListJSON(req);
+      lists = await listsHelpers.getListJSON(req, 'user');
       isLogged = true;
     } else {
       isLogged = false;
@@ -40,7 +41,7 @@ const search = async (req, res) => {
       isLogged,
     });
   } catch (error) {
-    res.status(400).send(error);
+    res.status(400).redirect('/');
   }
 };
 
