@@ -32,7 +32,10 @@ app.use(sassMiddleware({
   sourceMap: true,
 }));
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(express.static(path.join(__dirname, 'node_modules')));
+app.use('/owlcarousel', express.static(path.join(__dirname, 'node_modules', 'owl.carousel', 'dist')));
+app.use('/owlcarousel', express.static(path.join(__dirname, 'node_modules', 'owl.carousel', 'dist', 'assets')));
+console.log(path.join(__dirname, 'node_modules', 'owl.carousel', 'dist', 'assets'));
 app.use('/', indexRouter);
 app.use('/users', userRouter);
 app.use('/media', mediaRouter);

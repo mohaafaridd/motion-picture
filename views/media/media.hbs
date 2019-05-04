@@ -1,20 +1,114 @@
-<h1>{{media.title}}</h1>
-<iframe width="640" height="480" src="https://www.youtube.com/embed/{{media.trailer.key}}?controls=1&autoplay=1">
-</iframe>
+<div class="container p-5">
+    <div class="card shadow rounded">
+        <iframe class="w-100 rounded-top" height="640"
+            src="https://www.youtube.com/embed/{{media.trailer.key}}?controls=0">
+        </iframe>
+        <div class="card-body p-0">
+            <div class="info p-3">
+                <div class="d-flex">
+                    {{#if isLogged}}
+                    {{#if hasList}}
+                    <button type="button" class="btn btn-success mr-3" data-toggle="modal" data-target="#add-to-list">
+                        <i class="fas fa-plus"></i>
+                    </button>
+
+                    <div class="modal fade" id="add-to-list" tabindex="-1" role="dialog"
+                        aria-labelledby="add-to-listLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="add-to-listLabel">Modal title</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <form action="/media/add-to-list" method="post">
+                                        <div class="input-group">
+                                            <input type="hidden" name="type" value="{{media.type}}">
+                                            <input type="hidden" name="id" value="{{media.id}}">
+                                            <input type="hidden" name="title" value="{{media.title}}">
+                                            <input type="hidden" name="overview" value="{{media.overview}}">
+                                            <input type="hidden" name="poster" value="{{media.poster}}">
+                                        </div>
+
+                                        <div class="d-flex">
+                                            <select class="custom-select" name="owner" id="lists">
+                                                {{#each options}}
+                                                <option value="{{this.name}}">{{this.name}}</option>
+                                                {{/each}}
+                                            </select>
+
+                                            <button class="btn btn-success mx-1" type="submit">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{/if}}
+                    {{/if}}
+                    <h1 class="card-title m-0">{{media.title}} ({{media.year}})</h1>
+                </div>
+                <p class="overview card-text">{{media.overview}}</p>
+            </div>
+
+            <div class="actors media-section">
+                <h2 class="section-title pl-2">Cast</h2>
+                <div class="owl-carousel owl-theme">
+                    {{#each media.actors}}
+                    <div class="px-2">
+                        <div class="card shadow ">
+                            <img src="http://image.tmdb.org/t/p/w500{{profile_path}}" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <form action="/actors/{{id}}" method="get">
+                                    <button class="btn btn-outline-dark w-100 card-title" type="submit">
+                                        <h5 class="card-title m-0">{{name}}</h5>
+                                    </button>
+                                </form>
+                                <small class="card-text">{{character}}</small>
+                            </div>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+
+            <div class="similar media-section">
+
+                <h2 class="section-title pl-2">Similar</h2>
+                <div class="owl-carousel owl-theme">
+
+                    {{#each media.similar}}
+                    <div class="px-2">
+                        <div class="card shadow ">
+                            <img src="http://image.tmdb.org/t/p/w500{{this.poster}}" class="card-img-top"
+                                alt="{{this.title}} poster">
+                            <div class="card-body">
+
+                                <form action="/media/{{../type}}/{{id}}" method="get">
+                                    <button class="btn btn-outline-dark w-100 card-title" type="submit">
+                                        <h5 class="card-title m-0">{{title}}</h5>
+                                    </button>
+                                </form>
+
+                                <textarea class="form-control" name="overview" id="overview" cols="30" rows="10"
+                                    readonly>{{this.overview}}</textarea>
+
+                            </div>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+
+            </div>
+
+        </div>
+    </div>
 
 
-<p>{{media.overview}}</p>
-
-{{#each media.actors}}
-<h4>{{name}}</h4>
-<h5>{{character}}</h5>
-<img src="http://image.tmdb.org/t/p/w500{{profile_path}}" alt="">
-{{/each}}
-
-{{#each media.similar}}
-<h4>{{title}}</h4>
-<img src="http://image.tmdb.org/t/p/w500{{poster}}" alt="">
-<form action="/media/{{../type}}/{{id}}" method="get">
-    <button type="submit">View {{type}}</button>
-</form>
-{{/each}}
+</div>
