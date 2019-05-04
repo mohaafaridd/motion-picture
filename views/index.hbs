@@ -1,15 +1,15 @@
 <h1>{{title}}</h1>
 <p>Welcome to {{title}}</p>
 
-<h1>Welcome {{name}}</h1>
+<h1>Welcome {{user.name}}</h1>
 
 
-{{#if isAnonymous}}
+{{#if user.isAnonymous}}
 <a href="/users/signup">Sign up</a>
 <a href="/users/signin">Sign in</a>
 {{else}}
-<a href="/users/{{nickname}}">Profile</a>
-<a href="/users/{{nickname}}/lists">My lists</a>
+<a href="/users/{{user.nickname}}">Profile</a>
+<a href="/users/{{user.nickname}}/lists">My lists</a>
 <a href="/lists/add">Add List</a>
 <form action="/users/signout" method="post">
     <button type="submit">Logout</button>

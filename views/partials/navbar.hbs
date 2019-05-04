@@ -25,17 +25,31 @@
         <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
             <i class="fas fa-user"></i>
         </button>
-        <div class="dropdown-menu">
+        <div class="dropdown-menu {{#if user.isAnonymous}} {{else}}pb-0{{/if}}">
             <!-- Dropdown menu links -->
             {{#if user.isAnonymous}}
             <a class="dropdown-item" href="/users/signup">Sign up</a>
             <a class="dropdown-item" href="/users/signin">Sign in</a>
             {{else}}
-            <a class="dropdown-item" href="/users/{{user.nickname}}">Profile</a>
-            <a class="dropdown-item" href="/users/{{user.nickname}}/lists">My lists</a>
-            <a class="dropdown-item" href="/lists/add">Add List</a>
+            <a class="dropdown-item" href="/users/{{user.nickname}}">
+                <i class="fas fa-grin-squint mr-2"></i>
+                Profile
+            </a>
+            <a class="dropdown-item" href="/users/{{user.nickname}}/lists">
+                <i class="fas fa-list mr-2"></i>
+                My lists
+            </a>
+            <a class="dropdown-item" href="/lists/add">
+                <i class="fas fa-plus mr-2"></i>
+                Add List
+            </a>
+            <div class="dropdown-divider mb-0"></div>
+
             <form action="/users/signout" method="post">
-                <button class="dropdown-item btn btn-danger" type="submit">Logout</button>
+                <button class="btn btn-danger w-100" type="submit">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
             </form>
             {{/if}}
 
