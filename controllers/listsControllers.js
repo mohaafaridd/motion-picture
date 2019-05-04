@@ -8,7 +8,7 @@ const User = require('../models/user');
 
 const getTopMovies = async (req, res) => {
   try {
-    const link = `https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.TMDB_API_KEY}`;
+    const link = `https://api.themoviedb.org/3/tv/popular?api_key=${process.env.TMDB_API_KEY}`;
     const result = await axios.get(link);
     const { results } = result.data;
     const mappedData = mapData(results);

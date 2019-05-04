@@ -14,6 +14,7 @@ const mapData = data => data
     id: obj.id,
     // title for movies, original name for tv shows
     title: obj.title ? obj.title : obj.original_name,
+    popularity: obj.popularity,
     overview: obj.overview,
     poster: obj.poster_path,
   }));
