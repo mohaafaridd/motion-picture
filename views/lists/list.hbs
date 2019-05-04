@@ -1,5 +1,12 @@
-<h1>{{user.name}}'s list</h1>
+<h1>{{user.name}} list</h1>
 <h2>{{list.name}}</h2>
+
+{{#if isOwner}}
+<form action="/lists/edit/{{list.id}}/" method="get">
+    <input type="hidden" name="id" value="{{list.id}}">
+    <button type="submit">Edit List</button>
+</form>
+{{/if}}
 
 {{#each content}}
 <h2>{{title}}</h2>

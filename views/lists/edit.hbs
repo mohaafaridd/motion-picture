@@ -1,0 +1,5 @@
+<input type="text" value="{{list.name}}" readonly>
+<form action="/lists/edit/{{list.id}}" method="post">
+    <input type="text" name="newName">
+    <button type="submit">Submit new name</button>
+</form>

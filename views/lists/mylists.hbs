@@ -1,4 +1,4 @@
-<h1>{{name}}'s' lists</h1>
+<h1>{{name}} lists</h1>
 {{#each lists}}
 
 <h1>{{this.name}}</h1>
@@ -8,6 +8,13 @@
 <form action="/lists/delete/{{this.id}}" method="post">
     <button>Remove</button>
 </form>
+
+{{#if ../isOwner}}
+<form action="/lists/edit/{{this.id}}/" method="get">
+    <input type="hidden" name="id" value="{{this.id}}">
+    <button type="submit">Edit List</button>
+</form>
+{{/if}}
 {{/if}}
 
 {{/each}}

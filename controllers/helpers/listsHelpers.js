@@ -11,14 +11,12 @@ const getListJSON = async (req, source) => {
     lists = lists.filter(list => list.public);
   }
 
-  lists = lists.map((list) => {
-    return {
-      id: list.id,
-      name: list.name,
-      owner: nickname,
-      public: list.public,
-    };
-  });
+  lists = lists.map(list => ({
+    id: list.id,
+    name: list.name,
+    owner: nickname,
+    public: list.public,
+  }));
 
   return lists;
 };
