@@ -17,8 +17,6 @@
                     <textarea class="form-control" name="overview" id="overview" cols="30" rows="10" readonly>{{this.overview}}
                     </textarea>
 
-
-
                     {{#if ../isLogged}}
                     <div class="d-flex mt-2">
                         {{!-- Add --}}
@@ -46,7 +44,8 @@
                         {{!-- Seen --}}
                         <div>
                             <form action="/media/{{id}}/seen" method="post">
-                                <button class="btn {{#if seen}} btn-warning {{else}}btn-secondary{{/if}}"><i
+                                <button
+                                    class="btn {{#if seen}} btn-warning {{else}}btn-secondary{{/if}} seen seen-{{id}}"><i
                                         class="fas fa-eye"></i></button>
                             </form>
                         </div>
