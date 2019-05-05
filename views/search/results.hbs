@@ -1,50 +1,59 @@
 <div class="container">
 
+    <h2 class="section-title">Search results</h2>
     <div class="row mx-auto">
 
         {{#each results}}
 
-        <div class="col-md-4 p-2">
-            <div class="card">
+        <div class="col-lg-4 col-md-6 p-2">
+            <div class="card full-height">
                 <img src="http://image.tmdb.org/t/p/w500{{this.poster}}" class="card-img-top"
                     alt="{{this.title}} poster">
                 <div class="card-body">
 
-                    <form action="/media/{{../type}}/{{id}}" method="get">
-                        <button class="btn btn-outline-dark w-100 card-title" type="submit">
-                            <h5 class="card-title m-0">{{this.title}}</h5>
-                            {{!-- {{this.title}} --}}
-                        </button>
-                    </form>
+                    <a class="btn btn-outline-dark w-100 card-title"
+                        href="/media/{{this.type}}/{{id}}">{{this.title}}</a>
 
                     <textarea class="form-control" name="overview" id="overview" cols="30" rows="10" readonly>{{this.overview}}
                     </textarea>
 
                     {{#if ../isLogged}}
-                    {{#if ../hasList}}
-                    <form class="mt-2" action="/media/add-to-list" method="post">
-                        <div class="input-group">
-                            <input type="hidden" name="type" value="{{../type}}">
-                            <input type="hidden" name="id" value="{{this.id}}">
-                            <input type="hidden" name="title" value="{{this.title}}">
-                            <input type="hidden" name="overview" value="{{this.overview}}">
-                            <input type="hidden" name="poster" value="{{this.poster}}">
-                        </div>
-                        <div class="row">
-                            <div class="col-md-9">
+                    <div class="d-flex mt-2">
+                        {{!-- Add --}}
+                        {{#if ../hasList}}
+                        <form class="flex-grow-1 d-flex" action="/media/add-to-list" method="post">
+                            <div class="input-group bg-dark d-none">
+                                <input type="hidden" name="type" value="{{../type}}">
+                                <input type="hidden" name="id" value="{{this.id}}">
+                                <input type="hidden" name="title" value="{{this.title}}">
+                                <input type="hidden" name="overview" value="{{this.overview}}">
+                                <input type="hidden" name="poster" value="{{this.poster}}">
+                            </div>
+                            <div class="flex-grow-1">
+
                                 <select class="custom-select" name="owner" id="lists">
                                     {{#each ../options}}
                                     <option value="{{this.name}}">{{this.name}}</option>
                                     {{/each}}
                                 </select>
                             </div>
-                            <div class="col-md-3">
-                                <button class="btn btn-success w-100" type="submit"><i class="fas fa-plus"></i></button>
-                            </div>
+                            <button class="btn btn-success mx-1" type="submit"><i class="fas fa-plus"></i></button>
+                        </form>
+                        {{/if}}
+                        {{!-- Add --}}
+                        {{!-- Seen --}}
+                        <div>
+                            <form action="/media/{{id}}/seen" method="post">
+                                <button
+                                    class="btn {{#if seen}} btn-warning {{else}}btn-secondary{{/if}} seen seen-{{id}}"><i
+                                        class="fas fa-eye"></i></button>
+                            </form>
                         </div>
-                    </form>
+                        {{!-- Seen --}}
+                    </div>
                     {{/if}}
-                    {{/if}}
+
+
                 </div>
             </div>
         </div>

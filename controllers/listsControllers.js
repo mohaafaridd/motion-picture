@@ -16,6 +16,7 @@ const getAddList = (req, res) => {
 const addToList = async (req, res) => {
   // req.body must contain owner
   try {
+
     req.body.owner = await List.findOne({ name: req.body.owner });
     const duplicate = await Media.findOne({
       title: req.body.title,
@@ -30,6 +31,7 @@ const addToList = async (req, res) => {
     await media.save();
     res.status(200).redirect(`/users/${req.user.nickname}/lists/${req.body.owner.id}`);
   } catch (e) {
+    console.log(e.message);
     res.status(400).redirect(req.header('Referer'));
   }
 };

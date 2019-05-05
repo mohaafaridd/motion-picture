@@ -18,7 +18,12 @@ const search = async (req, res) => {
     }
 
     // Filtered data to fit the model
-    const filteredData = searchHelper.mapData(mediaArray);
+    let filteredData = searchHelper.mapData(mediaArray);
+
+    if (!user.isAnonymous) {
+      const seenList = user.seen.map(obj => obj.id);
+      filteredData = filteredData.map(media => ({ ...media, seen: seenList.includes(media.id) }));
+    }
 
     const lists = user.isAnonymous ? [] : await listsHelpers.getListJSON(req, 'user');
 
