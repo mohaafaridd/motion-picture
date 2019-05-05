@@ -10,12 +10,12 @@ const getMediaArray = async ({ title, type }) => {
 
 const mapData = data => data
   .map(obj => ({
-    id: obj.id,
+    id: parseInt(obj.id, 10),
     // title for movies, original name for tv shows
     title: obj.title ? obj.title : obj.original_name,
     popularity: obj.popularity,
     overview: obj.overview,
-    poster: obj.poster_path,
+    poster: obj.poster_path ? obj.poster_path : obj.poster,
   }));
 
 module.exports = {

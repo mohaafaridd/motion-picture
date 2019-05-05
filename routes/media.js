@@ -31,7 +31,6 @@ router.post('/:id/seen/', auth, async (req, res) => {
     }
 
     await user.save();
-    console.log(user.seen);
     res.redirect(req.header('Referer'));
   } catch (error) {
     res.send(error.message);
