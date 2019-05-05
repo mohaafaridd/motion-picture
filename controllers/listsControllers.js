@@ -1,7 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 const axios = require('axios');
 const { mapData } = require('./helpers/searchHelpers');
-const listsHelpers = require('./helpers/listsHelpers');
 const Media = require('../models/media');
 const List = require('../models/list');
 const User = require('../models/user');
@@ -85,24 +84,7 @@ const getList = async (req, res) => {
       user: req.user,
     });
   } catch (error) {
-    res.status(404).redirect(`/users/${req.user.nickname}/lists`);
-  }
-};
-
-const getLists = async (req, res) => {
-  try {
-    const { nickname } = req.params;
-    const user = await User.findOne({ nickname });
-    const lists = await listsHelpers.getListJSON(req, 'params');
-    const isOwner = req.user._id.toString() === user._id.toString();
-    res.render('lists/mylists', {
-      name: user.name,
-      lists,
-      isOwner,
-      user: req.user,
-    });
-  } catch (error) {
-    res.status(404).redirect('/');
+    res.status(404).redirect(`/users/${req.user.nickname}`);
   }
 };
 
@@ -115,23 +97,21 @@ const deleteList = async (req, res) => {
     const deletePromises = content.map(media => media.remove());
     await Promise.all(deletePromises);
     await list.remove();
-    res.redirect(`/users/${req.user.nickname}/lists`);
+    res.redirect(`/users/${req.user.nickname}`);
   } catch (error) {
-    res.status(400).redirect(`/users/${req.user.nickname}/lists`);
+    res.status(400).redirect(`/users/${req.user.nickname}`);
   }
 };
 
 const deleteFromList = async (req, res) => {
+  const { listid, mediaid } = req.body;
+  const list = await List.findOne({ id: listid });
+  const media = await Media.findOne({ owner: list._id, id: mediaid });
   try {
-    const { listid, mediaid } = req.body;
-
-    const list = await List.findOne({ id: listid });
-    const media = await Media.findOne({ owner: list._id, id: mediaid });
-
     await media.remove();
-    res.redirect(`/users/${req.user.nickname}/lists`);
+    res.redirect(`/users/${req.user.nickname}/lists/${listid}`);
   } catch (error) {
-    res.redirect('/');
+    res.redirect(`/users/${req.user.nickname}/lists/${listid}`);
   }
 };
 
@@ -140,7 +120,6 @@ module.exports = {
   addToList,
   postList,
   getList,
-  getLists,
   getAddList,
   deleteList,
   deleteFromList,

@@ -21,11 +21,11 @@ router.get('/edit/:id/', auth, async (req, res) => {
 });
 
 router.post('/edit/:id', auth, async (req, res) => {
+  const { newName } = req.body;
+  const { id } = req.params;
+  const list = await List.findOne({ id });
+  const user = await User.findById(list.owner);
   try {
-    const { newName } = req.body;
-    const { id } = req.params;
-    const list = await List.findOne({ id });
-    const user = await User.findById(list.owner);
     const duplicate = await List.findOne({ name: newName });
     if (duplicate) {
       throw new Error();
@@ -36,7 +36,7 @@ router.post('/edit/:id', auth, async (req, res) => {
     // res.send({ list, user });
     res.redirect(`/users/${user.nickname}/lists/${list.id}`);
   } catch (error) {
-    res.redirect('/');
+    res.redirect(`/users/${user.nickname}/lists/`);
   }
 });
 

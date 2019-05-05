@@ -26,6 +26,10 @@ const mediaSchema = new mongoose.Schema({
     required: true,
   },
 
+  watched: {
+    type: Boolean,
+  },
+
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,

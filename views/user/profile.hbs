@@ -1,5 +1,6 @@
 <div class="container">
 
+    {{!-- Profile --}}
     <div class="card mb-3">
         <div class="row no-gutters">
             <div class="col-md-4">
@@ -14,25 +15,69 @@
             </div>
         </div>
     </div>
+    {{!-- Profile --}}
 
+    {{!-- Lists --}}
     <div class="my-lists">
         {{#each lists}}
+        <div class="row no-gutters shadow border rounded">
+            <div class="col-md-3">
+                <img src="{{avatar}}" class="card-img" alt="{{avatar}} list picture">
+            </div>
 
-        <h1>{{this.name}}</h1>
-        <a href="/users/{{owner}}/lists/{{this.id}}">Link</a>
+            <div class="col-md-9">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <a class="btn btn-outline-dark w-100 card-title"
+                                href="/users/{{owner}}/lists/{{id}}">{{name}}</a>
 
-        <p>{{this.description}}</p>
-        {{#if ../isOwner}}
-        <form action="/lists/delete/{{this.id}}" method="post">
-            <button>Remove</button>
-        </form>
+                            <p class="card-text">{{description}}</p>
+                        </div>
 
-        <form action="/lists/edit/{{this.id}}/" method="get">
-            <input type="hidden" name="id" value="{{this.id}}">
-            <button type="submit">Edit List</button>
-        </form>
-        {{/if}}
+                        <div class="col-md-3">
+                            {{#if ../isOwner}}
+                            <form class="my-2" action="/lists/edit/{{id}}/" method="get">
+                                <input type="hidden" name="id" value="{{id}}">
+                                <button class="btn btn-success w-100" type="submit"><i class="fas fa-pen mr-2"></i>Edit
+                                    List</button>
+                            </form>
 
+                            <button class="btn btn-outline-danger w-100" data-toggle="modal"
+                                data-target="#deleteList{{id}}"><i class="fas fa-trash mr-2"></i>Remove</button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="deleteList{{id}}" tabindex="-1" role="dialog"
+                                aria-labelledby="deleteListLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteListLabel">Delete {{name}} list</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure that you want to delete '{{name}} List'?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <form action="/lists/delete/{{id}}" method="post">
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </form>
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{!-- Modal --}}
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         {{/each}}
     </div>
+    {{!-- Lists --}}
 </div>

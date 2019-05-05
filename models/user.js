@@ -52,6 +52,14 @@ const userSchema = new mongoose.Schema({
     min: 13,
   },
 
+  seen: [{
+    mediaid: {
+      id: {
+        type: String,
+      },
+    },
+  }],
+
   tokens: [{
     token: {
       type: String,

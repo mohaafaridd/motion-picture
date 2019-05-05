@@ -1,4 +1,6 @@
+/* eslint-disable no-underscore-dangle */
 const User = require('../models/user');
+const listsHelpers = require('../controllers/helpers/listsHelpers');
 
 // Sign up page
 const getSignupPage = async (req, res) => {
@@ -50,10 +52,27 @@ const postSignout = async (req, res) => {
   }
 };
 
+const getUser = async (req, res) => {
+  const { nickname } = req.params;
+  const { user } = req;
+  const profile = await User.findOne({ nickname });
+
+  const lists = await listsHelpers.getListJSON(req, 'params');
+  const isOwner = user._id.toString() === profile._id.toString();
+  res.render('user/profile', {
+    profile,
+    user,
+    lists,
+    isLogged: !user.isAnonymous,
+    isOwner,
+  });
+};
+
 module.exports = {
   getSignupPage,
   postSignup,
   postSignin,
   postSignout,
   getSigninPage,
+  getUser,
 };
