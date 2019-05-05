@@ -26,13 +26,12 @@ router.post('/:id/seen/', auth, async (req, res) => {
     id = parseInt(id, 10);
     if (seenIds.includes(id)) {
       user.seen = user.seen.filter(obj => obj.id !== id);
-      console.log('deleted');
     } else {
       user.seen = user.seen.concat({ id });
-      console.log('added');
     }
 
     await user.save();
+    console.log(user.seen);
     res.redirect(req.header('Referer'));
   } catch (error) {
     res.send(error.message);
