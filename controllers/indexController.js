@@ -5,7 +5,7 @@ const getHome = async (req, res) => {
   try {
     const { user } = req;
     user.isAnonymous = !!user.isAnonymous;
-    const popular = await getPopular();
+    const popular = await getPopular(user);
     const lists = user.isAnonymous ? [] : await listsHelpers.getListJSON(req, 'user');
     const hasList = lists.length !== 0;
     res.render('index', {

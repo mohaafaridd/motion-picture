@@ -1,7 +1,7 @@
 <div class="container">
 
     {{!-- Profile --}}
-    <div class="card mb-3">
+    <div class="card">
         <div class="row no-gutters">
             <div class="col-md-4">
                 <img src="{{profile.picture}}" class="card-img" alt="{{profile.name}} profile picture">
@@ -17,6 +17,7 @@
     </div>
     {{!-- Profile --}}
 
+    <a class="btn btn-success my-3" href="/lists/add"><i class="fas fa-plus mr-2"></i>Add list</a>
     {{!-- Lists --}}
     <div class="my-lists">
         {{#each lists}}
@@ -33,6 +34,15 @@
                                 href="/users/{{owner}}/lists/{{id}}">{{name}}</a>
 
                             <p class="card-text">{{description}}</p>
+
+                            <div class="form-group">
+                                <label>You have watched {{watchPercentage}}% of this list</label>
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" id="watched{{id}}" role="progressbar"
+                                        style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="col-md-3">

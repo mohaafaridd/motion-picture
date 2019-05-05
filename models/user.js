@@ -53,10 +53,9 @@ const userSchema = new mongoose.Schema({
   },
 
   seen: [{
-    mediaid: {
-      id: {
-        type: String,
-      },
+    id: {
+      type: Number,
+      unique: true,
     },
   }],
 

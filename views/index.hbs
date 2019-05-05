@@ -11,11 +11,8 @@
                     alt="{{this.title}} poster">
                 <div class="card-body">
 
-                    <form action="/media/{{this.type}}/{{id}}" method="get">
-                        <button class="btn btn-outline-dark w-100 card-title" type="submit">
-                            <h5 class="card-title m-0">{{this.title}}</h5>
-                        </button>
-                    </form>
+                    <a class="btn btn-outline-dark w-100 card-title"
+                        href="/media/{{this.type}}/{{id}}">{{this.title}}</a>
 
                     <textarea class="form-control" name="overview" id="overview" cols="30" rows="10" readonly>{{this.overview}}
                     </textarea>
@@ -44,6 +41,10 @@
                         </div>
                     </form>
                     {{/if}}
+                    <form action="/media/{{id}}/seen" method="post">
+                        <button class="btn {{#if seen}} btn-warning {{else}}btn-secondary{{/if}}"><i
+                                class="fas fa-eye"></i></button>
+                    </form>
                     {{/if}}
                 </div>
             </div>

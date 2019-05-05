@@ -11,15 +11,21 @@ const requestPopular = async (type) => {
   return mappedData;
 };
 
-const getPopular = async () => {
+const getPopular = async (user) => {
+
   const popularMovies = await requestPopular('movie');
   const popularTVShows = await requestPopular('tv');
-  const popular = [...popularMovies, ...popularTVShows];
+  let popular = [...popularMovies, ...popularTVShows];
   popular.sort((a, b) => {
     const popA = (a.popularity);
     const popB = (b.popularity);
     return popB - popA;
   });
+  if (!user.isAnonymous) {
+    const seenList = user.seen.map(obj => obj.id);
+    popular = popular.map(media => ({ ...media, seen: seenList.includes(media.id) }));
+  }
+
   return popular;
 };
 

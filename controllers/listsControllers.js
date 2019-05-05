@@ -58,9 +58,9 @@ const postList = async (req, res) => {
     });
 
     await list.save();
-    res.status(201).redirect(`/users/${req.user.nickname}/lists`);
+    res.status(201).redirect(`/users/${req.user.nickname}`);
   } catch (error) {
-    res.status(400).redirect(`/users/${req.user.nickname}/lists`);
+    res.status(400).redirect(`/users/${req.user.nickname}`);
   }
 };
 
