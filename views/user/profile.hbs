@@ -4,7 +4,7 @@
     <div class="card">
         <div class="row no-gutters">
             <div class="col-md-4">
-                <img src="{{profile.picture}}" class="card-img" alt="{{profile.name}} profile picture">
+                <img src="{{profile.avatar}}" class="card-img" alt="{{profile.name}} profile picture">
             </div>
             <div class="col-md-8">
                 <div class="card-body">
@@ -21,9 +21,9 @@
     {{!-- Lists --}}
     <div class="my-lists">
         {{#each lists}}
-        <div class="row no-gutters shadow border rounded">
+        <div class="row no-gutters shadow border rounded my-3">
             <div class="col-md-3">
-                <img src="{{avatar}}" class="card-img" alt="{{avatar}} list picture">
+                <img src="{{picture}}" class="card-img" alt="{{name}} list picture">
             </div>
 
             <div class="col-md-9">
@@ -49,12 +49,12 @@
                             {{#if ../isOwner}}
                             <form class="my-2" action="/lists/edit/{{id}}/" method="get">
                                 <input type="hidden" name="id" value="{{id}}">
-                                <button class="btn btn-success w-100" type="submit"><i class="fas fa-pen mr-2"></i>Edit
-                                    List</button>
+                                <button class="btn btn-success w-100" type="submit"><i
+                                        class="fas fa-pen mr-2"></i>Edit</button>
                             </form>
 
                             <button class="btn btn-outline-danger w-100" data-toggle="modal"
-                                data-target="#deleteList{{id}}"><i class="fas fa-trash mr-2"></i>Remove</button>
+                                data-target="#deleteList{{id}}"><i class="fas fa-trash mr-2"></i>Delete</button>
 
                             <!-- Modal -->
                             <div class="modal fade" id="deleteList{{id}}" tabindex="-1" role="dialog"

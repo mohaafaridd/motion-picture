@@ -1,22 +1,7 @@
 /* eslint-disable no-underscore-dangle */
-const axios = require('axios');
-const { mapData } = require('./helpers/searchHelpers');
 const Media = require('../models/media');
 const List = require('../models/list');
 const User = require('../models/user');
-
-const getTopMovies = async (req, res) => {
-  try {
-    const link = `https://api.themoviedb.org/3/tv/popular?api_key=${process.env.TMDB_API_KEY}`;
-    const result = await axios.get(link);
-    const { results } = result.data;
-    const mappedData = mapData(results);
-
-    res.send(mappedData);
-  } catch (error) {
-    res.send(error);
-  }
-};
 
 const getAddList = (req, res) => {
   try {
@@ -44,7 +29,7 @@ const addToList = async (req, res) => {
     await media.save();
     res.status(200).redirect(`/users/${req.user.nickname}/lists/${req.body.owner.id}`);
   } catch (e) {
-    res.status(400).send(e.message);
+    res.status(400).redirect(req.header('Referer'));
   }
 };
 
@@ -60,16 +45,16 @@ const postList = async (req, res) => {
     await list.save();
     res.status(201).redirect(`/users/${req.user.nickname}`);
   } catch (error) {
-    res.status(400).redirect(`/users/${req.user.nickname}`);
+    res.status(400).redirect(req.header('Referer'));
   }
 };
 
 const getList = async (req, res) => {
+  const { id, nickname } = req.params;
+  const owner = await User.findOne({ nickname });
+  const list = await List.findOne({ id, owner: owner._id });
+  const isOwner = list.owner.toString() === req.user._id.toString();
   try {
-    const { id, nickname } = req.params;
-    const owner = await User.findOne({ nickname });
-    const list = await List.findOne({ id, owner: owner._id });
-    const isOwner = list.owner.toString() === req.user._id.toString();
     if (!list.public && list.owner.toString() !== req.user._id.toString()) {
       throw new Error();
     }
@@ -84,7 +69,7 @@ const getList = async (req, res) => {
       user: req.user,
     });
   } catch (error) {
-    res.status(404).redirect(`/users/${req.user.nickname}`);
+    res.status(404).redirect(`/users/${nickname}`);
   }
 };
 
@@ -97,9 +82,9 @@ const deleteList = async (req, res) => {
     const deletePromises = content.map(media => media.remove());
     await Promise.all(deletePromises);
     await list.remove();
-    res.redirect(`/users/${req.user.nickname}`);
+    res.redirect(req.header('Referer'));
   } catch (error) {
-    res.status(400).redirect(`/users/${req.user.nickname}`);
+    res.status(400).redirect(req.header('Referer'));
   }
 };
 
@@ -111,12 +96,11 @@ const deleteFromList = async (req, res) => {
     await media.remove();
     res.redirect(`/users/${req.user.nickname}/lists/${listid}`);
   } catch (error) {
-    res.redirect(`/users/${req.user.nickname}/lists/${listid}`);
+    res.redirect();
   }
 };
 
 module.exports = {
-  getTopMovies,
   addToList,
   postList,
   getList,

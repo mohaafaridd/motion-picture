@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 const express = require('express');
+const axios = require('axios');
 const auth = require('../middlewares/auth');
 const viewAuth = require('../middlewares/viewAuth');
 const logAuth = require('../middlewares/logAuth');
@@ -23,7 +24,6 @@ router.post('/signin', logAuth, userControllers.postSignin);
 
 // Sign out
 router.post('/signout', auth, userControllers.postSignout);
-
 
 // Gets user profile
 router.get('/:nickname', viewAuth, userControllers.getUser);

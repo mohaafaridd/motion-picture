@@ -34,7 +34,7 @@ const search = async (req, res) => {
       user,
     });
   } catch (error) {
-    res.status(400).redirect('/');
+    res.status(400).redirect(req.header('Referer'));
   }
 };
 

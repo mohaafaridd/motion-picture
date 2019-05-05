@@ -6,8 +6,6 @@ const listsController = require('../controllers/listsControllers');
 const auth = require('../middlewares/auth');
 const viewAuth = require('../middlewares/viewAuth');
 
-const User = require('../models/user');
-
 const router = express.Router();
 
 

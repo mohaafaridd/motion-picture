@@ -17,7 +17,7 @@ const getHome = async (req, res) => {
       isLogged: !user.isAnonymous,
     });
   } catch (error) {
-    res.send(error.message);
+    res.redirect(req.header('Referer'));
   }
 };
 
