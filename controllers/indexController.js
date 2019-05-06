@@ -1,3 +1,4 @@
+const User = require('../models/user');
 const { getPopular } = require('./helpers/indexHelpers');
 const listsHelpers = require('./helpers/listsHelpers');
 
@@ -21,6 +22,27 @@ const getHome = async (req, res) => {
   }
 };
 
+// Registeration page
+const getRegister = async (req, res) => {
+  res.render('index/register', { user: req.user });
+};
+
+const postRegister = async (req, res) => {
+  const user = new User(req.body);
+
+  try {
+    await user.save();
+    const token = await user.generateAuthToken();
+    res.cookie('auth', token, { maxAge: process.env.EXP_DATE });
+
+    res.status(201).redirect('/');
+  } catch (error) {
+    res.status(400).redirect(req.header('Referer'));
+  }
+};
+
 module.exports = {
   getHome,
+  getRegister,
+  postRegister,
 };

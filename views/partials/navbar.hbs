@@ -28,7 +28,7 @@
         <div class="dropdown-menu {{#if user.isAnonymous}} {{else}}pb-0{{/if}}">
             <!-- Dropdown menu links -->
             {{#if user.isAnonymous}}
-            <a class="dropdown-item" href="/users/signup">Sign up</a>
+            <a class="dropdown-item" href="/register">Register</a>
             <a class="dropdown-item" href="/users/signin">Sign in</a>
             {{else}}
             <a class="dropdown-item" href="/users/{{user.nickname}}">

@@ -1,6 +1,5 @@
 /* eslint-disable no-underscore-dangle */
 const express = require('express');
-const axios = require('axios');
 const auth = require('../middlewares/auth');
 const viewAuth = require('../middlewares/viewAuth');
 const logAuth = require('../middlewares/logAuth');
@@ -9,12 +8,6 @@ const listsController = require('../controllers/listsControllers');
 
 
 const router = express.Router();
-
-// Sign up page
-router.get('/signup', logAuth, userControllers.getSignupPage);
-
-// Sign up a user.
-router.post('/signup', logAuth, userControllers.postSignup);
 
 // Sign in page
 router.get('/signin', logAuth, userControllers.getSigninPage);

@@ -35,13 +35,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
 app.use('/owlcarousel', express.static(path.join(__dirname, 'node_modules', 'owl.carousel', 'dist')));
 app.use('/owlcarousel', express.static(path.join(__dirname, 'node_modules', 'owl.carousel', 'dist', 'assets')));
-
-
+app.disable('x-powered-by');
 
 app.use('/', indexRouter);
 app.use('/users', userRouter);
+app.use('/users/:id/lists', listsRouter);
 app.use('/media', mediaRouter);
-app.use('/lists', listsRouter);
 
 app.get('*', (req, res) => {
   res.render('404');

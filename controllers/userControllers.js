@@ -3,26 +3,6 @@ const User = require('../models/user');
 const listsHelpers = require('../controllers/helpers/listsHelpers');
 
 // Sign up page
-const getSignupPage = async (req, res) => {
-  res.render('user/signup', { user: req.user });
-};
-
-// Sign up
-const postSignup = async (req, res) => {
-  const user = new User(req.body);
-
-  try {
-    await user.save();
-    const token = await user.generateAuthToken();
-    res.cookie('auth', token, { maxAge: process.env.EXP_DATE });
-
-    res.status(201).redirect('/');
-  } catch (error) {
-    res.status(400).redirect(req.header('Referer'));
-  }
-};
-
-// Sign up page
 const getSigninPage = async (req, res) => {
   res.render('user/signin', { user: req.user });
 };
@@ -81,8 +61,8 @@ const getUser = async (req, res) => {
 };
 
 module.exports = {
-  getSignupPage,
-  postSignup,
+  // getSignupPage,
+  // postSignup,
   postSignin,
   postSignout,
   getSigninPage,
