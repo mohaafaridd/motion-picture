@@ -30,7 +30,7 @@ const addToList = async (req, res) => {
     await media.save();
     res.status(200).redirect(`/users/${req.user.nickname}/lists/${req.body.owner.id}`);
   } catch (e) {
-    res.status(400).redirect(req.header('Referer'));
+    res.status(400).redirect(`/users/${req.user.nickname}/lists/${req.body.owner.id}`);
   }
 };
 

@@ -18,6 +18,7 @@ const getByRegex = (regex, classList, filter, convertToIntFlag = false) => {
 seenBtns.forEach((btn) => {
   btn.addEventListener('click', async (e) => {
     e.preventDefault();
+
     const objects = e.path;
     const result = objects.find(obj => obj.nodeName.toLowerCase() === 'button');
     result.disabled = true;

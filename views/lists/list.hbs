@@ -1,20 +1,31 @@
 <div class="container">
 
-    <h1>{{owner.name}} list</h1>
-    <h2>{{list.name}}</h2>
+    <div class="card p-3">
+        <div class="row no-gutters">
+            <div class="col-md-4 d-flex align-items-center flex-column justify-content-center">
+                <h5 class="card-title">{{owner.name}} list</h5>
+                <h6 class="card-text">{{list.name}}</h6>
 
-    {{#if isOwner}}
-    <form action="/lists/edit/{{list.id}}/" method="get">
-        <input type="hidden" name="id" value="{{list.id}}">
-        <button type="submit">Edit List</button>
-    </form>
-    {{/if}}
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <p>{{list.description}}</p>
+                    {{#if isOwner}}
+                    <form class="text-right" action="/lists/edit/{{list.id}}/" method="get">
+                        <input type="hidden" name="id" value="{{list.id}}">
+                        <button class=" btn btn-success" type="submit">Edit List</button>
+                    </form>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="row">
         {{#each content}}
         {{!-- New Test --}}
 
-        <div class="col-lg-4 col-md-6 p-2">
+        <div class="col-lg-4 col-md-6 p-3">
             <div class="card full-height">
                 <img src="http://image.tmdb.org/t/p/w500{{poster}}" class="card-img-top" alt="{{title}} poster">
                 <div class="card-body">
