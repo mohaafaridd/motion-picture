@@ -46,12 +46,6 @@ const userSchema = new mongoose.Schema({
     maxlength: 100,
   },
 
-  age: {
-    type: Number,
-    required: true,
-    min: 13,
-  },
-
   seen: [{
     id: {
       type: Number,

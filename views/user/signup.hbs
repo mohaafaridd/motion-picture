@@ -1,18 +1,33 @@
-<h1>Signup page</h1>
+<div class="d-flex m-auto">
+    <div class="card m-auto p-3 rounded shadow">
+        <div class="card-body d-flex flex-column">
+            <h1 class="text-center pb-3">Register</h1>
 
-<form action="/users/signup" method="post">
+            <form action="/users/signup" method="post">
 
-    <input type="text" name="name" placeholder="name">
-    <input type="text" name="nickname" placeholder="nickname">
-    <input type="email" name="email" placeholder="email">
-    <input type="password" name="password" placeholder="password">
-    <select name="age" id="age">
-        <option value="10">10</option>
-        <option value="12">12</option>
-        <option value="13">13</option>
-        <option value="20">20</option>
-        <option value="21">21</option>
-    </select>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="name" placeholder="Name">
+                    <small id="nameHelp" class="form-text text-muted">Your name can only contain characters and
+                        spaces</small>
+                </div>
 
-    <button type="submit">Submit</button>
-</form>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="nickname" placeholder="nickname">
+                    <small id="nicknameHelp" class="form-text text-muted">Nickname has to unique</small>
+                </div>
+
+                <div class="form-group">
+                    <input class="form-control" type="email" name="email" placeholder="email">
+                    <small id="nicknameHelp" class="form-text text-muted">Enter your email</small>
+                </div>
+
+                <div class="form-group">
+                    <input class="form-control" type="password" name="password" placeholder="password">
+                    <small class="form-text text-muted">Your password</small>
+                </div>
+
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
