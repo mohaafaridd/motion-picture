@@ -6,7 +6,6 @@ const User = require('../models/user');
 
 const router = express.Router();
 
-
 // Add list page
 router.get('/add', auth, listsController.getAddList);
 

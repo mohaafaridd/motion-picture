@@ -10,6 +10,7 @@ const getMediaArray = async ({ title, type }) => {
 
 const mapData = data => data
   .map(obj => ({
+    type: obj.type ? obj.type : null,
     id: parseInt(obj.id, 10),
     // title for movies, original name for tv shows
     title: obj.title ? obj.title : obj.original_name,

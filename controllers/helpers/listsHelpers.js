@@ -10,7 +10,6 @@ const getListJSON = async (req, source) => {
     const user = await User.findOne({ nickname });
 
     if (user === null) {
-      console.log(user);
       return [];
     }
 

@@ -31,6 +31,7 @@ const search = async (req, res) => {
 
     // res.send(filteredData);
     res.render('search/results', {
+      title: 'Search Results',
       type,
       results: filteredData,
       options: lists,

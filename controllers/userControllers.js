@@ -68,6 +68,7 @@ const getUser = async (req, res) => {
 
     const isOwner = user._id.toString() === profile._id.toString();
     res.render('user/profile', {
+      title: `${profile.name} Profile`,
       profile,
       user,
       lists,
