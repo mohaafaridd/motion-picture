@@ -25,13 +25,13 @@
         <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
             <i class="fas fa-user"></i>
         </button>
-        <div class="dropdown-menu {{#if user.isAnonymous}} {{else}}pb-0{{/if}}">
+        <div class="dropdown-menu {{#if cachedUser.isAnonymous}} {{else}}pb-0{{/if}}">
             <!-- Dropdown menu links -->
-            {{#if user.isAnonymous}}
+            {{#if cachedUser.isAnonymous}}
             <a class="dropdown-item" href="/register">Register</a>
             <a class="dropdown-item" href="/login">Login</a>
             {{else}}
-            <a class="dropdown-item" href="/users/{{user.nickname}}">
+            <a class="dropdown-item" href="/users/{{cachedUser.nickname}}">
                 <i class="fas fa-grin-squint mr-2"></i>
                 Profile
             </a>

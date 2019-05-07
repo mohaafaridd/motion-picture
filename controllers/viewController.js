@@ -6,9 +6,9 @@ const view = async (req, res) => {
   try {
     const { id, type } = req.params;
 
-    const { user } = req;
+    const { cachedUser } = req;
 
-    user.isAnonymous = !!user.isAnonymous;
+    cachedUser.isAnonymous = !!cachedUser.isAnonymous;
 
     if ((type !== 'tv' && type !== 'movie') || id.trim() === '') {
       throw new Error('Search error');
@@ -24,7 +24,7 @@ const view = async (req, res) => {
 
     const mappedData = viewHelpers.mapData([data], type)[0];
 
-    const lists = user.isAnonymous ? [] : await listsHelpers.getListJSON(req, 'user');
+    const lists = cachedUser.isAnonymous ? [] : await listsHelpers.getListJSON(req, 'user');
 
     const hasList = lists.length !== 0;
 
@@ -32,11 +32,11 @@ const view = async (req, res) => {
     res.render('media/media', {
       media: mappedData,
       type,
-      user,
+      cachedUser,
       title: mappedData.title,
       options: lists,
       hasList,
-      isLogged: !user.isAnonymous,
+      isLogged: !cachedUser.isAnonymous,
     });
   } catch (error) {
     res.status(404).redirect('/');

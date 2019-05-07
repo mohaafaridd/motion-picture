@@ -16,7 +16,7 @@ const auth = async (req, res, next) => {
 
     res.redirect('/');
   } catch (error) {
-    req.user = anonymous();
+    req.cachedUser = anonymous();
     next();
   }
 };

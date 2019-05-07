@@ -4,7 +4,7 @@ const listsHelpers = require('./helpers/listsHelpers');
 const search = async (req, res) => {
   try {
     const { type, title } = req.query;
-    const { user } = req;
+    const { cachedUser } = req;
 
     if ((type !== 'tv' && type !== 'movie') || title.trim() === '') {
       throw new Error('Search error');
@@ -20,12 +20,12 @@ const search = async (req, res) => {
     // Filtered data to fit the model
     let filteredData = searchHelper.mapData(mediaArray);
 
-    if (!user.isAnonymous) {
-      const seenList = user.seen.map(obj => obj.id);
+    if (!cachedUser.isAnonymous) {
+      const seenList = cachedUser.seen.map(obj => obj.id);
       filteredData = filteredData.map(media => ({ ...media, seen: seenList.includes(media.id) }));
     }
 
-    const lists = user.isAnonymous ? [] : await listsHelpers.getListJSON(req, 'user');
+    const lists = cachedUser.isAnonymous ? [] : await listsHelpers.getListJSON(req, 'user');
 
     const hasList = lists.length !== 0;
 
@@ -36,8 +36,8 @@ const search = async (req, res) => {
       results: filteredData,
       options: lists,
       hasList,
-      isLogged: !user.isAnonymous,
-      user,
+      isLogged: !cachedUser.isAnonymous,
+      cachedUser,
     });
   } catch (error) {
     res.status(400).redirect(req.header('Referer'));

@@ -6,8 +6,8 @@ const { mapData } = require('../controllers/helpers/searchHelpers');
 
 const getAddList = (req, res) => {
   try {
-    const { user } = req;
-    res.render('lists/add', { user });
+    const { cachedUser } = req;
+    res.render('lists/add', { cachedUser });
   } catch (error) {
     res.redirect('/', 400);
   }
@@ -28,9 +28,9 @@ const addToList = async (req, res) => {
     const media = new Media(req.body);
 
     await media.save();
-    res.status(200).redirect(`/users/${req.user.nickname}/lists/${req.body.owner.id}`);
+    res.status(200).redirect(`/users/${req.cachedUser.nickname}/lists/${req.body.owner.id}`);
   } catch (e) {
-    res.status(400).redirect(`/users/${req.user.nickname}/lists/${req.body.owner.id}`);
+    res.status(400).redirect(`/users/${req.cachedUser.nickname}/lists/${req.body.owner.id}`);
   }
 };
 
@@ -40,11 +40,11 @@ const postList = async (req, res) => {
 
     const list = new List({
       ...req.body,
-      owner: req.user._id,
+      owner: req.cachedUser._id,
     });
 
     await list.save();
-    res.status(201).redirect(`/users/${req.user.nickname}`);
+    res.status(201).redirect(`/users/${req.cachedUser.nickname}`);
   } catch (error) {
     res.status(400).redirect(req.header('Referer'));
   }
@@ -52,12 +52,12 @@ const postList = async (req, res) => {
 
 const getList = async (req, res) => {
   const { id, nickname } = req.params;
-  const { user } = req;
+  const { cachedUser } = req;
   const owner = await User.findOne({ nickname });
   const list = await List.findOne({ id, owner: owner._id });
-  const isOwner = list.owner.toString() === req.user._id.toString();
+  const isOwner = list.owner.toString() === req.cachedUser._id.toString();
   try {
-    if (!list.public && list.owner.toString() !== req.user._id.toString()) {
+    if (!list.public && list.owner.toString() !== req.cachedUser._id.toString()) {
       throw new Error();
     }
 
@@ -65,8 +65,8 @@ const getList = async (req, res) => {
 
     let content = mapData(list.content);
 
-    if (!user.isAnonymous) {
-      const seenList = user.seen.map(obj => obj.id);
+    if (!cachedUser.isAnonymous) {
+      const seenList = cachedUser.seen.map(obj => obj.id);
       content = content.map(media => ({ ...media, seen: seenList.includes(media.id) }));
     }
 
@@ -76,7 +76,7 @@ const getList = async (req, res) => {
       list,
       content,
       isOwner,
-      user,
+      cachedUser,
     });
   } catch (error) {
     res.status(404).redirect(`/users/${nickname}`);
@@ -87,7 +87,7 @@ const deleteList = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const list = await List.findOne({ id, owner: req.user._id });
+    const list = await List.findOne({ id, owner: req.cachedUser._id });
     const content = await Media.find({ owner: list._id });
     const deletePromises = content.map(media => media.remove());
     await Promise.all(deletePromises);
@@ -104,7 +104,7 @@ const deleteFromList = async (req, res) => {
     const list = await List.findOne({ id: listid });
     const media = await Media.findOne({ owner: list._id, id: mediaid });
     await media.remove();
-    res.redirect(`/users/${req.user.nickname}/lists/${listid}`);
+    res.redirect(`/users/${req.cachedUser.nickname}/lists/${listid}`);
   } catch (error) {
     res.redirect();
   }

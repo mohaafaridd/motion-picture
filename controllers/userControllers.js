@@ -4,7 +4,7 @@ const listsHelpers = require('../controllers/helpers/listsHelpers');
 
 const getUser = async (req, res) => {
   const { nickname } = req.params;
-  const { user } = req;
+  const { cachedUser } = req;
   try {
     const profile = await User.findOne({ nickname });
 
@@ -16,13 +16,13 @@ const getUser = async (req, res) => {
 
     lists = lists.map(obj => ({ ...obj, picture: obj.picture ? obj.picture : 'https://via.placeholder.com/1024' }));
 
-    const isOwner = user._id.toString() === profile._id.toString();
+    const isOwner = cachedUser._id.toString() === profile._id.toString();
     res.render('user/profile', {
       title: `${profile.name} Profile`,
       profile,
-      user,
+      cachedUser,
       lists,
-      isLogged: !user.isAnonymous,
+      isLogged: !cachedUser.isAnonymous,
       isOwner,
     });
   } catch (error) {

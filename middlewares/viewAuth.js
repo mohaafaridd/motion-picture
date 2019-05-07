@@ -15,7 +15,7 @@ const auth = async (req, res, next) => {
     }
 
     req.token = token;
-    req.user = user;
+    req.cachedUser = user;
     next();
   } catch (error) {
     req.user = anonymous();
