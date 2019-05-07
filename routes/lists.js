@@ -33,7 +33,7 @@ router.get('/:nickname/lists', async (req, res) => {
 // Add list page
 router.get('/:nickname/lists/add', auth, async (req, res) => {
   const { nickname } = req.params;
-  const { user: cachedUser } = req;
+  const { cachedUser } = req;
   try {
     const searchedUser = await User.findOne({ nickname });
 
@@ -45,15 +45,16 @@ router.get('/:nickname/lists/add', auth, async (req, res) => {
       throw new Error("You can't access this user");
     }
 
-    res.render('lists/add', { user: searchedUser });
+    res.render('lists/add', { searchedUser });
   } catch (error) {
     res.render('404', { error });
   }
 });
 
+// Returns array of lists
 router.post('/:nickname/lists/add', auth, async (req, res) => {
   const { nickname } = req.params;
-  const { user: cachedUser } = req;
+  const { cachedUser } = req;
 
   try {
     const searchedUser = await User.findOne({ nickname });

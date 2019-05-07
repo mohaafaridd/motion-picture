@@ -6,6 +6,7 @@ const User = require('../models/user');
 const auth = async (req, res, next) => {
   try {
     // const token = req.header('Authorization').replace('Bearer ', '');
+
     const token = req.cookies.auth;
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findOne({ _id: decoded._id, 'tokens.token': token });
@@ -18,7 +19,7 @@ const auth = async (req, res, next) => {
     req.cachedUser = user;
     next();
   } catch (error) {
-    req.user = anonymous();
+    req.cachedUser = anonymous();
     next();
   }
 };
