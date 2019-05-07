@@ -27,6 +27,7 @@ const getRegister = async (req, res) => {
   res.render('index/register', { user: req.user });
 };
 
+// Register a user
 const postRegister = async (req, res) => {
   const user = new User(req.body);
 
@@ -38,14 +39,16 @@ const postRegister = async (req, res) => {
     res.status(201).redirect('/');
     // res.redirect('/', 201);
   } catch (error) {
-    res.status(400).render('index/register', { error, user: req.user });
+    res.status(400).render('index/register', { error, user: req.cachedUser });
   }
 };
 
+// Login page
 const getLogin = async (req, res) => {
   res.render('index/login', { user: req.user });
 };
 
+// Login a user
 const postLogin = async (req, res) => {
   try {
     const user = await User.findByCredentials(req.body);
@@ -70,7 +73,6 @@ const postLogout = async (req, res) => {
     res.status(500).redirect(req.header('Referer'));
   }
 };
-
 
 module.exports = {
   getHome,

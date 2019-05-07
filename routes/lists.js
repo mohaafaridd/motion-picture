@@ -1,16 +1,88 @@
+/* eslint-disable no-underscore-dangle */
 const express = require('express');
 const listsController = require('../controllers/listsControllers');
+const listHelper = require('../controllers/helpers/listsHelpers');
 const auth = require('../middlewares/auth');
 const List = require('../models/list');
 const User = require('../models/user');
 
 const router = express.Router();
 
+// Gets All user lists
+router.get('/:nickname/lists', async (req, res) => {
+  const { nickname } = req.params;
+  const { cachedUser } = req;
+
+  try {
+    // Makes sure there is a user with the passed nickname
+    const searchedUser = await User.findOne({ nickname });
+
+    // Makes sure there's is a user with that nickname
+    if (!searchedUser) {
+      throw new Error('No user with this nickname is found');
+    }
+
+    const listJSON = await listHelper.getListJSON(cachedUser, searchedUser);
+
+    res.send(listJSON);
+  } catch (error) {
+    res.render('404');
+  }
+});
+
 // Add list page
-router.get('/add', auth, listsController.getAddList);
+router.get('/:nickname/lists/add', auth, async (req, res) => {
+  const { nickname } = req.params;
+  const { user: cachedUser } = req;
+  try {
+    const searchedUser = await User.findOne({ nickname });
+
+    if (!searchedUser) {
+      throw new Error('No user is found with this nickname');
+    }
+
+    if (cachedUser._id.toString() !== searchedUser._id.toString()) {
+      throw new Error("You can't access this user");
+    }
+
+    res.render('lists/add', { user: searchedUser });
+  } catch (error) {
+    res.render('404', { error });
+  }
+});
+
+router.post('/:nickname/lists/add', auth, async (req, res) => {
+  const { nickname } = req.params;
+  const { user: cachedUser } = req;
+
+  try {
+    const searchedUser = await User.findOne({ nickname });
+
+    if (!searchedUser) {
+      throw new Error('No user is found with this nickname');
+    }
+
+    if (cachedUser._id.toString() !== searchedUser._id.toString()) {
+      throw new Error("You can't access this user");
+    }
+
+    const { publicIndicator } = req.body;
+    const list = new List({
+      ...req.body,
+      public: !!publicIndicator,
+      owner: searchedUser._id,
+    });
+
+    await list.save();
+
+    res.redirect(`/users/${nickname}/lists/`);
+  } catch (error) {
+    res.send('failed');
+  }
+});
 
 // Creates new list
-router.post('/', auth, listsController.postList);
+// router.post('/', auth, listsController.postList);
 
 router.get('/edit/:id/', auth, async (req, res) => {
   const { id } = req.params;
@@ -41,9 +113,5 @@ router.post('/edit/:id', auth, async (req, res) => {
 
 // Delete a list
 router.post('/delete/:id', auth, listsController.deleteList);
-
-router.get('/*', (req, res) => {
-  res.render('404');
-});
 
 module.exports = router;

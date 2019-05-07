@@ -39,7 +39,7 @@ app.disable('x-powered-by');
 
 app.use('/', indexRouter);
 app.use('/users', userRouter);
-app.use('/users/:id/lists', listsRouter);
+app.use('/users', listsRouter);
 app.use('/media', mediaRouter);
 
 app.get('*', (req, res) => {

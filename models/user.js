@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    minlength: 5,
+    minlength: 2,
     maxlength: 32,
     trim: true,
     match: /^[a-zA-Z][a-z-A-Z ]+[a-zA-Z]$/,
@@ -49,7 +49,6 @@ const userSchema = new mongoose.Schema({
   seen: [{
     id: {
       type: Number,
-      unique: true,
     },
   }],
 
@@ -77,6 +76,7 @@ userSchema.pre('save', async function preSaveOperation(next) {
 });
 
 userSchema.post('save', (error, doc, next) => {
+  next(error);
   if (error.name === 'MongoError' && error.code === 11000) {
     next(new Error('Nickname or Email is already used.'));
   } else if (error.name === 'ValidationError') {

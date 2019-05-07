@@ -1,6 +1,6 @@
 <div class="container d-flex flex-column justify-content-center full-height">
 
-    <form action="/lists/" method="post">
+    <form action="/users/{{user.nickname}}/lists/add" method="post">
         <div class="card border rounded">
             <div class="card-header bg-primary text-white">
                 Add a new list
@@ -18,7 +18,8 @@
                 </div>
 
                 <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="checkbox" name="public">
+                    <input type="checkbox" name="publicIndicator" class="custom-control-input" id="checkbox"
+                        name="public">
                     <label class="custom-control-label" for="checkbox">Public list</label>
                 </div>
 

@@ -2,7 +2,6 @@
 const User = require('../models/user');
 const listsHelpers = require('../controllers/helpers/listsHelpers');
 
-
 const getUser = async (req, res) => {
   const { nickname } = req.params;
   const { user } = req;

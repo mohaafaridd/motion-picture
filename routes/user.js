@@ -12,7 +12,7 @@ const router = express.Router();
 router.get('/:nickname', viewAuth, userControllers.getUser);
 
 // Get a specific list
-router.get('/:nickname/lists/:id', viewAuth, listsController.getList);
+// router.get('/:nickname/lists/:id', viewAuth, listsController.getList);
 
 
 module.exports = router;
