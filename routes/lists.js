@@ -3,13 +3,14 @@ const express = require('express');
 const listsController = require('../controllers/listsControllers');
 const listHelper = require('../controllers/helpers/listsHelpers');
 const auth = require('../middlewares/auth');
+const viewAuth = require('../middlewares/viewAuth');
 const List = require('../models/list');
 const User = require('../models/user');
 
 const router = express.Router();
 
 // Gets All user lists
-router.get('/:nickname/lists', async (req, res) => {
+router.get('/:nickname/lists', viewAuth, async (req, res) => {
   const { nickname } = req.params;
   const { cachedUser } = req;
 
@@ -26,7 +27,7 @@ router.get('/:nickname/lists', async (req, res) => {
 
     res.send(listJSON);
   } catch (error) {
-    res.render('404');
+    res.render('404', error);
   }
 });
 
@@ -45,13 +46,13 @@ router.get('/:nickname/lists/add', auth, async (req, res) => {
       throw new Error("You can't access this user");
     }
 
-    res.render('lists/add', { searchedUser });
+    res.render('lists/add', { cachedUser, searchedUser });
   } catch (error) {
     res.render('404', { error });
   }
 });
 
-// Returns array of lists
+// Adds a list to user
 router.post('/:nickname/lists/add', auth, async (req, res) => {
   const { nickname } = req.params;
   const { cachedUser } = req;
@@ -76,39 +77,62 @@ router.post('/:nickname/lists/add', auth, async (req, res) => {
 
     await list.save();
 
-    res.redirect(`/users/${nickname}/lists/`);
+    res.redirect(`/users/${nickname}/`);
   } catch (error) {
-    res.send('failed');
+    res.render('404', { error });
+    // res.send('failed');
   }
 });
 
 // Creates new list
-// router.post('/', auth, listsController.postList);
-
-router.get('/edit/:id/', auth, async (req, res) => {
+router.get('/:nickname/lists/edit/:id', auth, async (req, res) => {
+  // List id
   const { id } = req.params;
-  const { user } = req;
-  const list = await List.findOne({ id });
-  res.render('lists/edit', { list, user });
-});
 
-router.post('/edit/:id', auth, async (req, res) => {
-  const { newName } = req.body;
-  const { id } = req.params;
-  const list = await List.findOne({ id });
-  const user = await User.findById(list.owner);
+  // User that tries to access this route
+  const { cachedUser } = req;
+  const { nickname } = req.params;
+
   try {
-    const duplicate = await List.findOne({ name: newName });
-    if (duplicate) {
-      throw new Error();
+    const searchedUser = await User.findOne({ nickname });
+
+
+    if (!searchedUser || searchedUser._id.toString() !== cachedUser._id.toString()) {
+      throw new Error('You can edit only your lists');
     }
 
-    list.name = newName;
-    await list.save();
-    // res.send({ list, user });
-    res.redirect(`/users/${user.nickname}/lists/${list.id}`);
+    // List that is trying to access
+    const list = await List.findOne({ id });
+
+    if (!list) {
+      throw new Error('No list is found');
+    }
+
+    res.render('lists/edit', { list, cachedUser, searchedUser });
   } catch (error) {
-    res.redirect(`/users/${user.nickname}/lists/`);
+    res.render('404', { error });
+  }
+});
+
+router.post('/:nickname/lists/edit/:id', auth, async (req, res) => {
+  const { nickname } = req.params;
+  try {
+    const searchedUser = await User.findOne({ nickname });
+    const { cachedUser } = req;
+
+    if (!searchedUser || searchedUser._id.toString() !== cachedUser._id.toString()) {
+      throw new Error('You can edit only your lists');
+    }
+
+    const { id } = req.params;
+    const { publicIndicator } = req.body;
+    await List.findOneAndUpdate(
+      { id: parseInt(id, 10) },
+      { ...req.body, public: !!publicIndicator },
+    );
+    res.redirect(`/users/${nickname}/lists`);
+  } catch (error) {
+    res.render('404', { error });
   }
 });
 
