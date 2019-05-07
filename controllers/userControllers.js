@@ -2,35 +2,6 @@
 const User = require('../models/user');
 const listsHelpers = require('../controllers/helpers/listsHelpers');
 
-// Sign up page
-const getSigninPage = async (req, res) => {
-  res.render('user/signin', { user: req.user });
-};
-
-// Sign in
-const postSignin = async (req, res) => {
-  try {
-    const user = await User.findByCredentials(req.body);
-    const token = await user.generateAuthToken();
-    res.cookie('auth', token, { maxAge: process.env.EXP_DATE });
-    res.status(200).redirect('/');
-  } catch (error) {
-    res.status(400).redirect(req.header('Referer'));
-  }
-};
-
-// Sign out
-const postSignout = async (req, res) => {
-  try {
-    req.user.tokens = req.user.tokens
-      .filter(token => token.token !== req.token);
-    res.clearCookie('auth');
-    await req.user.save();
-    res.redirect('/');
-  } catch (error) {
-    res.status(500).redirect(req.header('Referer'));
-  }
-};
 
 const getUser = async (req, res) => {
   const { nickname } = req.params;
@@ -61,10 +32,6 @@ const getUser = async (req, res) => {
 };
 
 module.exports = {
-  // getSignupPage,
-  // postSignup,
-  postSignin,
-  postSignout,
-  getSigninPage,
+  // postSignout,
   getUser,
 };

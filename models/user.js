@@ -76,6 +76,16 @@ userSchema.pre('save', async function preSaveOperation(next) {
   next();
 });
 
+userSchema.post('save', (error, doc, next) => {
+  if (error.name === 'MongoError' && error.code === 11000) {
+    next(new Error('Nickname or Email is already used.'));
+  } else if (error.name === 'ValidationError') {
+    next(new Error('Error registering user'));
+  } else {
+    next(error);
+  }
+});
+
 userSchema.static('findByCredentials', async ({ input, password }) => {
   let user;
 

@@ -11,25 +11,6 @@ const mediaSchema = new mongoose.Schema({
     required: true,
   },
 
-  title: {
-    type: String,
-    required: true,
-  },
-
-  overview: {
-    type: String,
-    required: true,
-  },
-
-  poster: {
-    type: String,
-    required: true,
-  },
-
-  watched: {
-    type: Boolean,
-  },
-
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
