@@ -1,11 +1,11 @@
 /* eslint-disable no-underscore-dangle */
 const express = require('express');
-const listsController = require('../controllers/listsControllers');
 const listHelper = require('../controllers/helpers/listsHelpers');
 const auth = require('../middlewares/auth');
 const viewAuth = require('../middlewares/viewAuth');
 const List = require('../models/list');
 const User = require('../models/user');
+const Media = require('../models/media');
 
 const router = express.Router();
 
@@ -24,7 +24,6 @@ router.get('/:nickname/lists', viewAuth, async (req, res) => {
     }
 
     const listJSON = await listHelper.getListJSON(cachedUser, searchedUser);
-
     res.send(listJSON);
   } catch (error) {
     res.render('404', error);
@@ -76,11 +75,9 @@ router.post('/:nickname/lists/add', auth, async (req, res) => {
     });
 
     await list.save();
-
     res.redirect(`/users/${nickname}/`);
   } catch (error) {
     res.render('404', { error });
-    // res.send('failed');
   }
 });
 
@@ -136,6 +133,23 @@ router.post('/:nickname/lists/edit/:id', auth, async (req, res) => {
 });
 
 // Delete a list
-router.post('/delete/:id', auth, listsController.deleteList);
+router.post('/:nickname/lists/delete/:id', auth, async (req, res) => {
+  const { nickname, id } = req.params;
+  try {
+    const searchedUser = await User.findOne({ nickname });
+    const { cachedUser } = req;
+
+    if (!searchedUser || searchedUser._id.toString() !== cachedUser._id.toString()) {
+      throw new Error('You can edit only your lists');
+    }
+
+    const list = await List.findOneAndDelete({ id });
+    await Media.deleteMany({ owner: list._id });
+
+    res.redirect(`/users/${nickname}/lists/`);
+  } catch (error) {
+    res.send(error);
+  }
+});
 
 module.exports = router;

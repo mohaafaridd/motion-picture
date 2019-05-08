@@ -17,7 +17,8 @@
     </div>
     {{!-- Profile --}}
 
-    <a class="btn btn-success my-3" href="/lists/add"><i class="fas fa-plus mr-2"></i>Add list</a>
+    <a class="btn btn-success my-3" href="/users/{{profile.nickname}}/lists/add"><i class="fas fa-plus mr-2"></i>Add
+        list</a>
     {{!-- Lists --}}
     <div class="my-lists">
         {{#each lists}}
