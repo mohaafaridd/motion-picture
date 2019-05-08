@@ -1,3 +1,4 @@
+const validator = require('validator');
 const User = require('../models/user');
 const { getPopular } = require('./helpers/indexHelpers');
 const listsHelpers = require('./helpers/listsHelpers');
@@ -29,9 +30,51 @@ const getRegister = async (req, res) => {
 
 // Register a user
 const postRegister = async (req, res) => {
-  const user = new User(req.body);
-
   try {
+    // Validation Inputs
+    const {
+      name,
+      nickname,
+      email,
+      password,
+    } = req.body;
+
+    // Length of name
+    if (name.trim().length < 2 || name.trim().length > 32) {
+      throw new Error('Name have length between 2 and 32 characters');
+    }
+
+    // Name regex validation
+    const nameRegex = /^[a-zA-Z][a-z-A-Z ]+[a-zA-Z]$/;
+    if (!nameRegex.test(name.trim())) {
+      throw new Error('Name must be charaters and spaces only');
+    }
+
+    // Nickname length validation
+    if (nickname.trim().length < 2 || nickname.trim().length > 15) {
+      throw new Error('Nickname have length between 2 and 32 characters');
+    }
+
+    // Nickname regex validation
+    const nicknameRegex = /^\w([-.]?\w)+\w$/;
+    if (!nicknameRegex.test(nickname.trim())) {
+      throw new Error('Nickname must be charaters, dots and dashes only');
+    }
+
+    // Nickname availability
+    if (await User.findOne({ nickname: nickname.trim() })) {
+      throw new Error('A user with this nickname is already registered');
+    }
+
+    if (!validator.isEmail(email.trim()) || await User.findOne({ email: email.trim() })) {
+      throw new Error('Invalid Email');
+    }
+
+    if (password.length < 6 || password > 100) {
+      throw new Error('Password have length between 6 and 100 characters');
+    }
+
+    const user = new User(req.body);
     await user.save();
     const token = await user.generateAuthToken();
     res.cookie('auth', token, { maxAge: process.env.EXP_DATE });

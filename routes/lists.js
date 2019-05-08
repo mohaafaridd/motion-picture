@@ -96,7 +96,6 @@ router.get('/:nickname/lists/edit/:id', auth, async (req, res) => {
   try {
     const searchedUser = await User.findOne({ nickname });
 
-
     if (!searchedUser || searchedUser._id.toString() !== cachedUser._id.toString()) {
       throw new Error('You can edit only your lists');
     }
