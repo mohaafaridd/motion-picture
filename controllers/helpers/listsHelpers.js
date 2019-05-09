@@ -6,14 +6,11 @@ const getListJSON = async (cachedUser, searchedUser) => {
   let lists = [];
 
   try {
-    // const { nickname } = req[source];
-    // const user = await User.findOne({ nickname });
     lists = await List.find({ owner: searchedUser._id });
 
     if (lists.length === 0) {
       return [];
     }
-    // console.log('searchedUser', searchedUser.name, lists);
 
     if (cachedUser._id.toString() !== searchedUser._id.toString()) {
       lists = lists.filter(list => list.public);

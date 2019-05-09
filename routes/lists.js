@@ -1,6 +1,10 @@
 /* eslint-disable no-underscore-dangle */
+const axios = require('axios');
 const express = require('express');
+const _ = require('lodash');
+
 const listHelper = require('../controllers/helpers/listsHelpers');
+const viewHelper = require('../controllers/helpers/viewHelpers');
 const auth = require('../middlewares/auth');
 const viewAuth = require('../middlewares/viewAuth');
 const List = require('../models/list');
@@ -32,6 +36,7 @@ router.get('/:nickname/lists', viewAuth, async (req, res) => {
 
 // Add list page
 router.get('/:nickname/lists/add', auth, async (req, res) => {
+  console.log('object');
   const { nickname } = req.params;
   const { cachedUser } = req;
   try {
@@ -149,6 +154,73 @@ router.post('/:nickname/lists/delete/:id', auth, async (req, res) => {
     res.redirect(`/users/${nickname}/lists/`);
   } catch (error) {
     res.send(error);
+  }
+});
+
+router.get('/:nickname/lists/:id', viewAuth, async (req, res) => {
+  const { nickname, id } = req.params;
+  const { cachedUser } = req;
+
+  try {
+    // Makes sure there is a user with the passed nickname
+    const searchedUser = await User.findOne({ nickname });
+
+    // Makes sure there's is a user with that nickname
+    if (!searchedUser) {
+      throw new Error('No user with this nickname is found');
+    }
+
+    const list = await List.findOne({ id, owner: searchedUser._id });
+
+    if (!list) {
+      throw new Error('No list found');
+    }
+
+    const isOwner = list.owner.toString() === cachedUser._id.toString();
+
+    if (!list.public && !isOwner) {
+      throw new Error('No list found');
+    }
+
+    await list.populate('content').execPopulate();
+
+    let listContent = list.content;
+
+    listContent = listContent.map((element) => {
+      const x = {
+        type: element.type,
+        id: parseInt(element.id, 10),
+      };
+      return x;
+    });
+
+    const requests = listContent.map(media => axios.get(`https://api.themoviedb.org/3/${media.type}/${media.id}?api_key=${process.env.TMDB_API_KEY}`));
+
+    const response = await Promise.all(requests);
+
+    let mappedResponse = response.map(obj => (_.pick(obj.data, [
+      'id',
+      'vote_average',
+      'title',
+      'original_name',
+      'poster_path',
+    ])));
+
+    mappedResponse = mappedResponse.map(obj => _.mapKeys(obj, (val, key) => {
+      if (key === 'original_name') {
+        return 'title';
+      }
+      return key;
+    }));
+
+    const mergedList = _.map(listContent, (item) => {
+      return _.extend(item, _.find(mappedResponse, { id: item.id }));
+    });
+
+    res.send(mergedList);
+    // res.send(response[0].data);
+  } catch (error) {
+    res.render('404', { error });
   }
 });
 

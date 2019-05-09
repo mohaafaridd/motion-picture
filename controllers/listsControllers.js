@@ -65,6 +65,7 @@ const getList = async (req, res) => {
 
     let content = mapData(list.content);
 
+
     if (!cachedUser.isAnonymous) {
       const seenList = cachedUser.seen.map(obj => obj.id);
       content = content.map(media => ({ ...media, seen: seenList.includes(media.id) }));

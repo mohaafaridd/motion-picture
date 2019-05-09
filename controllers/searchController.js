@@ -25,7 +25,8 @@ const search = async (req, res) => {
       filteredData = filteredData.map(media => ({ ...media, seen: seenList.includes(media.id) }));
     }
 
-    const lists = cachedUser.isAnonymous ? [] : await listsHelpers.getListJSON(req, 'user');
+    const lists = cachedUser.isAnonymous
+      ? [] : await listsHelpers.getListJSON(cachedUser, cachedUser);
 
     const hasList = lists.length !== 0;
 
