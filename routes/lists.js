@@ -186,13 +186,10 @@ router.get('/:nickname/lists/:id', viewAuth, async (req, res) => {
 
     let listContent = list.content;
 
-    listContent = listContent.map((element) => {
-      const x = {
-        type: element.type,
-        id: parseInt(element.id, 10),
-      };
-      return x;
-    });
+    listContent = listContent.map(e => ({
+      type: e.type,
+      id: parseInt(e.id, 10),
+    }));
 
     const requests = listContent.map(media => axios.get(`https://api.themoviedb.org/3/${media.type}/${media.id}?api_key=${process.env.TMDB_API_KEY}`));
 
@@ -204,20 +201,36 @@ router.get('/:nickname/lists/:id', viewAuth, async (req, res) => {
       'title',
       'original_name',
       'poster_path',
+      'overview',
     ])));
 
     mappedResponse = mappedResponse.map(obj => _.mapKeys(obj, (val, key) => {
-      if (key === 'original_name') {
-        return 'title';
+      switch (key) {
+        case 'original_name':
+          return 'title';
+
+        case 'vote_average':
+          return 'votes';
+
+        case 'poster_path':
+          return 'poster';
+
+        default:
+          return key;
       }
-      return key;
     }));
 
     const mergedList = _.map(listContent, (item) => {
-      return _.extend(item, _.find(mappedResponse, { id: item.id }));
+      return _.assignIn(item, _.find(mappedResponse, { id: item.id }));
     });
 
-    res.send(mergedList);
+    res.render('lists/list', {
+      searchedUser,
+      list,
+      isOwner,
+      content: mergedList,
+    });
+    // res.send(mergedList);
     // res.send(response[0].data);
   } catch (error) {
     res.render('404', { error });
