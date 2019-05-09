@@ -1,0 +1,33 @@
+<div class="card full-height">
+    <img src="http://image.tmdb.org/t/p/w500{{poster}}" class="card-img-top" alt="{{title}} poster">
+    <div class="card-body">
+        <a class="btn btn-outline-dark w-100 card-title" href="/media/{{type}}/{{id}}">{{title}}</a>
+
+        <textarea class="form-control" name="overview" id="overview" cols="30" rows="10" readonly>{{this.overview}}
+                    </textarea>
+
+        {{#if isOwner}}
+        <div class="d-flex mt-2">
+            {{!-- delete --}}
+            <form class="flex-grow-1 d-flex" action="/media/remove-from-list/" method="post">
+                <div class="input-group bg-dark d-none">
+                    <input type="hidden" name="listid" value="{{../list.id}}">
+                    <input type="hidden" name="mediaid" value="{{id}}">
+                </div>
+                <button class="btn btn-danger mx-1" type="submit"><i class="fas fa-minus"></i></button>
+            </form>
+            {{!-- delete --}}
+            {{!-- Seen --}}
+            <div>
+                <form action="/media/{{id}}/seen" method="post">
+                    <button class="btn {{#if seen}} btn-warning {{else}}btn-secondary{{/if}} seen seen-{{id}}"><i
+                            class="fas fa-eye"></i></button>
+                </form>
+            </div>
+            {{!-- Seen --}}
+        </div>
+        {{/if}}
+
+
+    </div>
+</div>

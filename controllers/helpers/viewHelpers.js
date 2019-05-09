@@ -1,13 +1,5 @@
 const axios = require('axios');
-
-// Map Object
-// const objectMap = (object, mapFn) => {
-//   return Object.keys(object).reduce((result, key) => {
-//     const mapped = result;
-//     mapped[key] = mapFn(object[key]);
-//     return mapped;
-//   }, {});
-// };
+const _ = require('lodash');
 
 // // Maps titles to return an array of links
 // const getLink = (id, type, mode) => {

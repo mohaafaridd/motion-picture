@@ -186,6 +186,8 @@ router.get('/:nickname/lists/:id', viewAuth, async (req, res) => {
 
     let listContent = list.content;
 
+    // getSimpleInfo(listContent);
+
     listContent = listContent.map(e => ({
       type: e.type,
       id: parseInt(e.id, 10),
@@ -220,15 +222,16 @@ router.get('/:nickname/lists/:id', viewAuth, async (req, res) => {
       }
     }));
 
-    const mergedList = _.map(listContent, (item) => {
-      return _.assignIn(item, _.find(mappedResponse, { id: item.id }));
-    });
+    const mergedList = _.map(listContent, item => (
+      _.assignIn(item, _.find(mappedResponse, { id: item.id }))
+    ));
 
     res.render('lists/list', {
       searchedUser,
       list,
       isOwner,
       content: mergedList,
+      cachedUser,
     });
     // res.send(mergedList);
     // res.send(response[0].data);
