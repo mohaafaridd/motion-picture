@@ -6,27 +6,36 @@ const getUser = async (req, res) => {
   const { nickname } = req.params;
   const { cachedUser } = req;
   try {
-    const profile = await User.findOne({ nickname });
+    const searchedUser = await User.findOne({ nickname });
 
-    if (!profile.avatar) {
-      profile.avatar = 'https://via.placeholder.com/1024';
+    if (!searchedUser) {
+      throw new Error('No user is found');
     }
 
-    let lists = await listsHelpers.getListJSON(req, 'params');
+    if (!searchedUser.avatar) {
+      searchedUser.avatar = 'https://via.placeholder.com/1024';
+    }
 
-    lists = lists.map(obj => ({ ...obj, picture: obj.picture ? obj.picture : 'https://via.placeholder.com/1024' }));
+    let lists = await listsHelpers.getListJSON(cachedUser, searchedUser);
 
-    const isOwner = cachedUser._id.toString() === profile._id.toString();
+    if (lists) {
+      lists = lists.map(obj => ({ ...obj, picture: obj.picture ? obj.picture : 'https://via.placeholder.com/1024' }));
+    } else {
+      lists = [];
+    }
+
+    const isOwner = cachedUser._id.toString() === searchedUser._id.toString();
     res.render('user/profile', {
-      title: `${profile.name} Profile`,
-      profile,
+      isProfile: true,
+      title: `${searchedUser.name} Profile`,
+      profile: searchedUser,
       cachedUser,
       lists,
       isLogged: !cachedUser.isAnonymous,
       isOwner,
     });
   } catch (error) {
-    res.redirect('/');
+    res.render('404', { error });
   }
 };
 

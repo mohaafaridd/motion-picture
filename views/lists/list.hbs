@@ -11,7 +11,8 @@
                 <div class="card-body">
                     <p>{{list.description}}</p>
                     {{#if isOwner}}
-                    <form class="text-right" action="/lists/edit/{{list.id}}/" method="get">
+                    <form class="text-right" action="/users/{{searchedUser.nickname}}/lists/edit/{{list.id}}/"
+                        method="get">
                         <input type="hidden" name="id" value="{{list.id}}">
                         <button class=" btn btn-success" type="submit">Edit List</button>
                     </form>

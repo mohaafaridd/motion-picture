@@ -12,4 +12,3 @@ $(() => {
     $(this).find('input[type=submit]').hide();
   });
 });
-

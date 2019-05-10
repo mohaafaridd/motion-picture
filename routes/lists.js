@@ -86,7 +86,7 @@ router.post('/:nickname/lists/add', auth, async (req, res) => {
   }
 });
 
-// Creates new list
+// Edit list page
 router.get('/:nickname/lists/edit/:id', auth, async (req, res) => {
   // List id
   const { id } = req.params;
@@ -115,6 +115,7 @@ router.get('/:nickname/lists/edit/:id', auth, async (req, res) => {
   }
 });
 
+// Edits a list
 router.post('/:nickname/lists/edit/:id', auth, async (req, res) => {
   const { nickname } = req.params;
   try {
@@ -131,7 +132,7 @@ router.post('/:nickname/lists/edit/:id', auth, async (req, res) => {
       { id: parseInt(id, 10) },
       { ...req.body, public: !!publicIndicator },
     );
-    res.redirect(`/users/${nickname}/lists`);
+    res.redirect(`/users/${nickname}/`);
   } catch (error) {
     res.render('404', { error });
   }
@@ -151,12 +152,13 @@ router.post('/:nickname/lists/delete/:id', auth, async (req, res) => {
     const list = await List.findOneAndDelete({ id });
     await Media.deleteMany({ owner: list._id });
 
-    res.redirect(`/users/${nickname}/lists/`);
+    res.redirect(`/users/${nickname}/`);
   } catch (error) {
     res.send(error);
   }
 });
 
+// Gets specific list content
 router.get('/:nickname/lists/:id', viewAuth, async (req, res) => {
   const { nickname, id } = req.params;
   const { cachedUser } = req;
