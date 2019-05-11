@@ -1,27 +1,26 @@
 /* eslint-disable no-underscore-dangle */
+// Modules
 const express = require('express');
-const viewAuth = require('../middlewares/viewAuth');
-const logAuth = require('../middlewares/logAuth');
 const auth = require('../middlewares/auth');
 const indexController = require('../controllers/indexController');
 
 const router = express.Router();
 
 // Gets home
-router.get('/', viewAuth, indexController.getHome);
+router.get('/', auth.viewAuth, indexController.getHome);
 
 // Goes to registeration page
-router.get('/register', logAuth, indexController.getRegister);
+router.get('/register', auth.anonymousAuth, indexController.getRegister);
 
 // Add a new user to database
-router.post('/register', logAuth, indexController.postRegister);
+router.post('/register', auth.anonymousAuth, indexController.postRegister);
 
 // Goes to log in page
-router.get('/login', logAuth, indexController.getLogin);
+router.get('/login', auth.anonymousAuth, indexController.getLogin);
 
 // log in a user
-router.post('/login', logAuth, indexController.postLogin);
+router.post('/login', auth.anonymousAuth, indexController.postLogin);
 
-router.post('/logout', auth, indexController.postLogout);
+router.post('/logout', auth.loggedAuth, indexController.postLogout);
 
 module.exports = router;

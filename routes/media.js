@@ -4,21 +4,20 @@ const search = require('../controllers/searchController');
 const viewController = require('../controllers/viewController');
 const listsController = require('../controllers/listsControllers');
 const auth = require('../middlewares/auth');
-const viewAuth = require('../middlewares/viewAuth');
 
 const router = express.Router();
 
 // Search
-router.get('/search', viewAuth, search);
+router.get('/search', auth.viewAuth, search);
 
 // Get specific movie or tv show
-router.get('/:type/:id', viewAuth, viewController);
+router.get('/:type/:id', auth.viewAuth, viewController);
 
-router.post('/add-to-list', auth, listsController.addToList);
+router.post('/add-to-list', auth.loggedAuth, listsController.addToList);
 
-router.post('/remove-from-list', auth, listsController.deleteFromList);
+router.post('/remove-from-list', auth.loggedAuth, listsController.deleteFromList);
 
-router.post('/:id/seen/', auth, async (req, res) => {
+router.post('/:id/seen/', auth.loggedAuth, async (req, res) => {
   const { cachedUser } = req;
   let { id } = req.params;
   try {
