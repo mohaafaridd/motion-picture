@@ -18,7 +18,7 @@ const addToList = async (req, res) => {
   try {
     req.body.owner = await List.findOne({ name: req.body.owner });
     const duplicate = await Media.findOne({
-      title: req.body.title,
+      id: req.body.id,
       owner: req.body.owner,
     });
 
