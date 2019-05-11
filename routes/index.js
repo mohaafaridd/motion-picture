@@ -1,7 +1,10 @@
 /* eslint-disable no-underscore-dangle */
+
 // Modules
 const express = require('express');
+// Auth
 const auth = require('../middlewares/auth');
+// Controllers
 const indexController = require('../controllers/indexController');
 
 const router = express.Router();
