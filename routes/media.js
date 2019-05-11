@@ -19,7 +19,6 @@ router.post('/add-to-list', auth, listsController.addToList);
 router.post('/remove-from-list', auth, listsController.deleteFromList);
 
 router.post('/:id/seen/', auth, async (req, res) => {
-  console.log('here');
   const { cachedUser } = req;
   let { id } = req.params;
   try {

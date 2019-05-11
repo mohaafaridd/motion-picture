@@ -17,6 +17,7 @@ const getListJSON = async (cachedUser, searchedUser) => {
     }
 
     lists = lists.map(list => ({
+      _id: list._id,
       id: list.id,
       name: list.name,
       owner: searchedUser.nickname,

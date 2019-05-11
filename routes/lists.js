@@ -195,7 +195,16 @@ router.get('/:nickname/lists/:id', viewAuth, async (req, res) => {
 
     const listContent = list.content;
 
-    const output = listContent.length > 0 ? await mediaInfoGrapper(listContent, false) : [];
+    let output = listContent.length > 0 ? await mediaInfoGrapper(listContent) : [];
+
+    // Seen list
+    const seenList = cachedUser.seen.map(e => parseInt(e.id, 10));
+    // output + seen for each media
+    output = output.map((media) => {
+      const mediaId = parseInt(media.id, 10);
+      const seenInList = seenList.includes(mediaId);
+      return { ...media, seen: seenInList };
+    });
 
     res.render('lists/list', {
       searchedUser,

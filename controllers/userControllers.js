@@ -1,5 +1,8 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable no-underscore-dangle */
+const _ = require('lodash');
 const User = require('../models/user');
+const Media = require('../models/media');
 const listsHelpers = require('../controllers/helpers/listsHelpers');
 
 const getUser = async (req, res) => {
@@ -17,6 +20,17 @@ const getUser = async (req, res) => {
     }
 
     let lists = await listsHelpers.getListJSON(cachedUser, searchedUser);
+
+    if (!cachedUser.isAnonymous) {
+      const seen = cachedUser.seen.map(e => parseInt(e.id, 10));
+      lists = await Promise.all(lists.map(async (list) => {
+        const media = await Media.find({ owner: list._id });
+        const ids = media.map(e => parseInt(e.id, 10));
+        const seenInList = ids.filter(id => seen.includes(id));
+        const watchPercentage = isNaN(seenInList.length / ids.length * 100) ? 0 : seenInList.length / ids.length * 100;
+        return { ...list, watchPercentage };
+      }));
+    }
 
     if (lists) {
       lists = lists.map(obj => ({ ...obj, picture: obj.picture ? obj.picture : 'https://via.placeholder.com/1024' }));
