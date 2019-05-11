@@ -28,11 +28,6 @@ seenBtns.forEach((btn) => {
       const id = getByRegex('^seen-([0-9]+)$', classList, 'seen-', true);
       const state = getByRegex('^btn-(warning|secondary)$', classList, 'btn-');
 
-      await axios({
-        method: 'post',
-        url: `/media/${id}/seen`,
-      });
-
       if (state === 'warning') {
         result.classList.add('btn-secondary');
         result.classList.remove('btn-warning');
@@ -41,12 +36,16 @@ seenBtns.forEach((btn) => {
         result.classList.remove('btn-secondary');
       }
       result.disabled = false;
+
+      const el = document.querySelector(':focus');
+      if (el) el.blur();
+
+      await axios({
+        method: 'post',
+        url: `/media/${id}/seen`,
+      });
     } catch (error) {
       result.disabled = false;
     }
-
-
-    const el = document.querySelector(':focus');
-    if (el) el.blur();
   });
 });

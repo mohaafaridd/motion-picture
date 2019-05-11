@@ -1,10 +1,7 @@
 /* eslint-disable no-underscore-dangle */
-const axios = require('axios');
 const express = require('express');
-const _ = require('lodash');
 
 const listHelper = require('../controllers/helpers/listsHelpers');
-const viewHelper = require('../controllers/helpers/viewHelpers');
 const mediaInfoGrapper = require('../controllers/helpers/mediaInfoGrapper');
 const auth = require('../middlewares/auth');
 const viewAuth = require('../middlewares/viewAuth');
@@ -31,13 +28,12 @@ router.get('/:nickname/lists', viewAuth, async (req, res) => {
     const listJSON = await listHelper.getListJSON(cachedUser, searchedUser);
     res.send(listJSON);
   } catch (error) {
-    res.render('404', error);
+    res.render('404', { error, cachedUser });
   }
 });
 
 // Add list page
 router.get('/:nickname/lists/add', auth, async (req, res) => {
-  console.log('object');
   const { nickname } = req.params;
   const { cachedUser } = req;
   try {
@@ -53,7 +49,7 @@ router.get('/:nickname/lists/add', auth, async (req, res) => {
 
     res.render('lists/add', { cachedUser, searchedUser });
   } catch (error) {
-    res.render('404', { error });
+    res.render('404', { error, cachedUser });
   }
 });
 
@@ -83,7 +79,7 @@ router.post('/:nickname/lists/add', auth, async (req, res) => {
     await list.save();
     res.redirect(`/users/${nickname}/`);
   } catch (error) {
-    res.render('404', { error });
+    res.render('404', { error, cachedUser });
   }
 });
 
@@ -112,16 +108,16 @@ router.get('/:nickname/lists/edit/:id', auth, async (req, res) => {
 
     res.render('lists/edit', { list, cachedUser, searchedUser });
   } catch (error) {
-    res.render('404', { error });
+    res.render('404', { error, cachedUser });
   }
 });
 
 // Edits a list
 router.post('/:nickname/lists/edit/:id', auth, async (req, res) => {
   const { nickname } = req.params;
+  const { cachedUser } = req;
   try {
     const searchedUser = await User.findOne({ nickname });
-    const { cachedUser } = req;
 
     if (!searchedUser || searchedUser._id.toString() !== cachedUser._id.toString()) {
       throw new Error('You can edit only your lists');
@@ -129,33 +125,43 @@ router.post('/:nickname/lists/edit/:id', auth, async (req, res) => {
 
     const { id } = req.params;
     const { publicIndicator } = req.body;
-    await List.findOneAndUpdate(
+    const updatedList = await List.findOneAndUpdate(
       { id: parseInt(id, 10) },
       { ...req.body, public: !!publicIndicator },
     );
+
+    if (!updatedList) {
+      throw new Error('No list is found');
+    }
+
     res.redirect(`/users/${nickname}/`);
   } catch (error) {
-    res.render('404', { error });
+    res.render('404', { error, cachedUser });
   }
 });
 
 // Delete a list
 router.post('/:nickname/lists/delete/:id', auth, async (req, res) => {
   const { nickname, id } = req.params;
+  const { cachedUser } = req;
   try {
     const searchedUser = await User.findOne({ nickname });
-    const { cachedUser } = req;
 
     if (!searchedUser || searchedUser._id.toString() !== cachedUser._id.toString()) {
       throw new Error('You can edit only your lists');
     }
 
     const list = await List.findOneAndDelete({ id });
+
+    if (!list) {
+      throw new Error('No list is found');
+    }
+
     await Media.deleteMany({ owner: list._id });
 
     res.redirect(`/users/${nickname}/`);
   } catch (error) {
-    res.send(error);
+    res.render('404', { error, cachedUser });
   }
 });
 
@@ -187,68 +193,19 @@ router.get('/:nickname/lists/:id', viewAuth, async (req, res) => {
 
     await list.populate('content').execPopulate();
 
-    let listContent = list.content;
+    const listContent = list.content;
 
     const output = await mediaInfoGrapper(listContent, false);
 
-    res.send(output);
-    // // getSimpleInfo(listContent);
-
-    // // #1
-    // listContent = listContent.map(e => ({
-    //   type: e.type,
-    //   id: parseInt(e.id, 10),
-    // }));
-
-    // // #2
-    // const requests = listContent.map(media => axios.get(`https://api.themoviedb.org/3/${media.type}/${media.id}?api_key=${process.env.TMDB_API_KEY}`));
-
-    // // #3
-    // const response = await Promise.all(requests);
-
-    // // #4
-    // let mappedResponse = response.map(obj => (_.pick(obj.data, [
-    //   'id',
-    //   'vote_average',
-    //   'title',
-    //   'original_name',
-    //   'poster_path',
-    //   'overview',
-    // ])));
-
-    // // #5
-    // mappedResponse = mappedResponse.map(obj => _.mapKeys(obj, (val, key) => {
-    //   switch (key) {
-    //     case 'original_name':
-    //       return 'title';
-
-    //     case 'vote_average':
-    //       return 'votes';
-
-    //     case 'poster_path':
-    //       return 'poster';
-
-    //     default:
-    //       return key;
-    //   }
-    // }));
-
-    // // #6
-    // const mergedList = _.map(listContent, item => (
-    //   _.assignIn(item, _.find(mappedResponse, { id: item.id }))
-    // ));
-
-    // res.render('lists/list', {
-    //   searchedUser,
-    //   list,
-    //   isOwner,
-    //   content: mergedList,
-    //   cachedUser,
-    // });
-    // res.send(mergedList);
-    // res.send(response[0].data);
+    res.render('lists/list', {
+      searchedUser,
+      list,
+      isOwner,
+      content: output,
+      cachedUser,
+    });
   } catch (error) {
-    res.render('404', { error });
+    res.render('404', { error, cachedUser });
   }
 });
 

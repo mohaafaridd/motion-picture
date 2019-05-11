@@ -12,7 +12,6 @@ const requestPopular = async (type) => {
 };
 
 const getPopular = async (user) => {
-
   const popularMovies = await requestPopular('movie');
   const popularTVShows = await requestPopular('tv');
   let popular = [...popularMovies, ...popularTVShows];

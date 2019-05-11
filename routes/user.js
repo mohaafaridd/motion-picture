@@ -1,10 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 const express = require('express');
-const auth = require('../middlewares/auth');
 const viewAuth = require('../middlewares/viewAuth');
 const userControllers = require('../controllers/userControllers');
-const listsController = require('../controllers/listsControllers');
-
 
 const router = express.Router();
 
