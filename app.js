@@ -43,7 +43,7 @@ app.use('/users', listsRouter);
 app.use('/media', mediaRouter);
 
 app.get('*', (req, res) => {
-  res.render('404');
+  res.render('404', { error: { message: 'Wrong Link' } });
 });
 
 // catch 404 and forward to error handler

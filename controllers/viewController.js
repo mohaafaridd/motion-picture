@@ -1,13 +1,10 @@
-// const axios = require('axios');
-const viewHelpers = require('./helpers/viewHelpers');
 const mediaInfoGrapper = require('./helpers/mediaInfoGrapper');
 const listsHelpers = require('./helpers/listsHelpers');
 
 const view = async (req, res) => {
+  const { cachedUser } = req;
   try {
     const { id, type } = req.params;
-
-    const { cachedUser } = req;
 
     cachedUser.isAnonymous = !!cachedUser.isAnonymous;
 
@@ -17,7 +14,8 @@ const view = async (req, res) => {
 
     const data = await mediaInfoGrapper([{ id, type }], false);
 
-    const lists = cachedUser.isAnonymous ? [] : await listsHelpers.getListJSON(cachedUser, cachedUser);
+    const lists = cachedUser.isAnonymous
+      ? [] : await listsHelpers.getListJSON(cachedUser, cachedUser);
 
     const hasList = lists.length !== 0;
 
@@ -30,7 +28,7 @@ const view = async (req, res) => {
       isLogged: !cachedUser.isAnonymous,
     });
   } catch (error) {
-    res.status(404).redirect('/');
+    res.status(404).render('404', { error, cachedUser });
   }
 };
 

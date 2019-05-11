@@ -82,6 +82,9 @@ const mappingKey = mappedResponse => mappedResponse.map(obj => _.mapKeys(obj, (v
 
 const getInfo = async (lists, simpleOutput = true) => {
   // #1
+  if (lists.length < 0) {
+    throw new Error('Empty List');
+  }
   const content = mapInput(lists);
 
   // #2
@@ -94,6 +97,10 @@ const getInfo = async (lists, simpleOutput = true) => {
 
   // #3
   const response = await Promise.all(requests);
+
+  if (!response[0].data) {
+    throw new Error('No media is found');
+  }
 
   // #4
   let mappedResponse;

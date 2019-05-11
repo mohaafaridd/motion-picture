@@ -195,7 +195,7 @@ router.get('/:nickname/lists/:id', viewAuth, async (req, res) => {
 
     const listContent = list.content;
 
-    const output = await mediaInfoGrapper(listContent, false);
+    const output = listContent.length > 0 ? await mediaInfoGrapper(listContent, false) : [];
 
     res.render('lists/list', {
       searchedUser,

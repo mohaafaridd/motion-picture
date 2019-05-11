@@ -12,11 +12,12 @@ const auth = async (req, res, next) => {
     if (!user) {
       throw new Error();
     }
+
     req.token = token;
     req.cachedUser = user;
     next();
   } catch (error) {
-    res.status(401).send({ error: 'You\'re not authenticated' });
+    res.status(401).render('404', { error: { message: 'You\'re not authenticated' } });
   }
 };
 
