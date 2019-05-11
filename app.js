@@ -11,6 +11,7 @@ const indexRouter = require('./routes/index');
 const userRouter = require('./routes/user');
 const mediaRouter = require('./routes/media');
 const listsRouter = require('./routes/lists');
+const actorRouter = require('./routes/actor');
 
 const app = express();
 connectDB();
@@ -41,6 +42,7 @@ app.use('/', indexRouter);
 app.use('/users', userRouter);
 app.use('/users', listsRouter);
 app.use('/media', mediaRouter);
+app.use('/actor', actorRouter);
 
 app.get('*', (req, res) => {
   res.render('404', { error: { message: 'Wrong Link' } });

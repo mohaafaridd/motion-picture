@@ -107,6 +107,7 @@ const view = async (req, res) => {
     const hasList = lists.length !== 0;
 
     res.render('media/media', {
+      title: data[0].title,
       media: data[0],
       type,
       cachedUser,

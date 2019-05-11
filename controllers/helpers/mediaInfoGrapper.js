@@ -3,7 +3,7 @@ const _ = require('lodash');
 
 // #1
 const mapInput = input => input.map(e => ({
-  type: e.type,
+  type: e.type ? e.type : e.media_type,
   id: parseInt(e.id, 10),
 }));
 
@@ -35,6 +35,7 @@ const mapSimpleResponse = response => response.map(obj => (_.pick(obj.data, [
   'title',
   'original_name',
   'poster_path',
+  'popularity',
   'overview',
 ])));
 
