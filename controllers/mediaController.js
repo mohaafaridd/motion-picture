@@ -1,6 +1,8 @@
 /* eslint-disable no-underscore-dangle */
+// Models
 const Media = require('../models/media');
 const List = require('../models/list');
+// Helpers
 const searchHelper = require('./helpers/searchHelpers');
 const listsHelpers = require('./helpers/listsHelpers');
 const mediaInfoGrapper = require('./helpers/mediaInfoGrapper');

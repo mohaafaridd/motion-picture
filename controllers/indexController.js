@@ -1,5 +1,8 @@
+// Modules
 const validator = require('validator');
+// Models
 const User = require('../models/user');
+// Helpers
 const { getPopular } = require('./helpers/indexHelpers');
 const listsHelpers = require('./helpers/listsHelpers');
 
@@ -8,7 +11,8 @@ const getHome = async (req, res) => {
     const { cachedUser } = req;
     cachedUser.isAnonymous = !!cachedUser.isAnonymous;
     const popular = await getPopular(cachedUser);
-    const lists = cachedUser.isAnonymous ? [] : await listsHelpers.getListJSON(cachedUser, cachedUser);
+    const lists = cachedUser.isAnonymous
+      ? [] : await listsHelpers.getListJSON(cachedUser, cachedUser);
     const hasList = lists.length !== 0;
     res.render('index', {
       title: 'Motion Picture',

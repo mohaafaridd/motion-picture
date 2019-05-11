@@ -1,8 +1,9 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-underscore-dangle */
-const _ = require('lodash');
+// Models
 const User = require('../models/user');
 const Media = require('../models/media');
+// Helpers
 const listsHelpers = require('../controllers/helpers/listsHelpers');
 
 const getUser = async (req, res) => {
@@ -27,7 +28,8 @@ const getUser = async (req, res) => {
         const media = await Media.find({ owner: list._id });
         const ids = media.map(e => parseInt(e.id, 10));
         const seenInList = ids.filter(id => seen.includes(id));
-        const watchPercentage = isNaN(seenInList.length / ids.length * 100) ? 0 : seenInList.length / ids.length * 100;
+        const watchPercentage = isNaN(seenInList.length / ids.length * 100)
+          ? 0 : seenInList.length / ids.length * 100;
         return { ...list, watchPercentage };
       }));
     }
