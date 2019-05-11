@@ -5,6 +5,7 @@ const _ = require('lodash');
 
 const listHelper = require('../controllers/helpers/listsHelpers');
 const viewHelper = require('../controllers/helpers/viewHelpers');
+const mediaInfoGrapper = require('../controllers/helpers/mediaInfoGrapper');
 const auth = require('../middlewares/auth');
 const viewAuth = require('../middlewares/viewAuth');
 const List = require('../models/list');
@@ -188,53 +189,62 @@ router.get('/:nickname/lists/:id', viewAuth, async (req, res) => {
 
     let listContent = list.content;
 
-    // getSimpleInfo(listContent);
+    const output = await mediaInfoGrapper(listContent, false);
 
-    listContent = listContent.map(e => ({
-      type: e.type,
-      id: parseInt(e.id, 10),
-    }));
+    res.send(output);
+    // // getSimpleInfo(listContent);
 
-    const requests = listContent.map(media => axios.get(`https://api.themoviedb.org/3/${media.type}/${media.id}?api_key=${process.env.TMDB_API_KEY}`));
+    // // #1
+    // listContent = listContent.map(e => ({
+    //   type: e.type,
+    //   id: parseInt(e.id, 10),
+    // }));
 
-    const response = await Promise.all(requests);
+    // // #2
+    // const requests = listContent.map(media => axios.get(`https://api.themoviedb.org/3/${media.type}/${media.id}?api_key=${process.env.TMDB_API_KEY}`));
 
-    let mappedResponse = response.map(obj => (_.pick(obj.data, [
-      'id',
-      'vote_average',
-      'title',
-      'original_name',
-      'poster_path',
-      'overview',
-    ])));
+    // // #3
+    // const response = await Promise.all(requests);
 
-    mappedResponse = mappedResponse.map(obj => _.mapKeys(obj, (val, key) => {
-      switch (key) {
-        case 'original_name':
-          return 'title';
+    // // #4
+    // let mappedResponse = response.map(obj => (_.pick(obj.data, [
+    //   'id',
+    //   'vote_average',
+    //   'title',
+    //   'original_name',
+    //   'poster_path',
+    //   'overview',
+    // ])));
 
-        case 'vote_average':
-          return 'votes';
+    // // #5
+    // mappedResponse = mappedResponse.map(obj => _.mapKeys(obj, (val, key) => {
+    //   switch (key) {
+    //     case 'original_name':
+    //       return 'title';
 
-        case 'poster_path':
-          return 'poster';
+    //     case 'vote_average':
+    //       return 'votes';
 
-        default:
-          return key;
-      }
-    }));
+    //     case 'poster_path':
+    //       return 'poster';
 
-    const mergedList = _.map(listContent, item => (
-      _.assignIn(item, _.find(mappedResponse, { id: item.id }))
-    ));
+    //     default:
+    //       return key;
+    //   }
+    // }));
 
-    res.render('lists/list', {
-      searchedUser,
-      list,
-      isOwner,
-      content: mergedList,
-      cachedUser,
-    });
+    // // #6
+    // const mergedList = _.map(listContent, item => (
+    //   _.assignIn(item, _.find(mappedResponse, { id: item.id }))
+    // ));
+
+    // res.render('lists/list', {
+    //   searchedUser,
+    //   list,
+    //   isOwner,
+    //   content: mergedList,
+    //   cachedUser,
+    // });
     // res.send(mergedList);
     // res.send(response[0].data);
   } catch (error) {

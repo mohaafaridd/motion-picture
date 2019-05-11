@@ -1,44 +1,34 @@
 // const axios = require('axios');
 const viewHelpers = require('./helpers/viewHelpers');
+const mediaInfoGrapper = require('./helpers/mediaInfoGrapper');
 const listsHelpers = require('./helpers/listsHelpers');
 
 const view = async (req, res) => {
   try {
-    // const { id, type } = req.params;
+    const { id, type } = req.params;
 
-    // const { cachedUser } = req;
+    const { cachedUser } = req;
 
-    // cachedUser.isAnonymous = !!cachedUser.isAnonymous;
+    cachedUser.isAnonymous = !!cachedUser.isAnonymous;
 
-    // if ((type !== 'tv' && type !== 'movie') || id.trim() === '') {
-    //   throw new Error('Search error');
-    // }
+    if ((type !== 'tv' && type !== 'movie') || id.trim() === '') {
+      throw new Error('Search error');
+    }
 
-    // const link = viewHelpers.getLink(id, type);
+    const data = await mediaInfoGrapper([{ id, type }], false);
 
-    // const request = viewHelpers.mapRequests(link);
+    const lists = cachedUser.isAnonymous ? [] : await listsHelpers.getListJSON(cachedUser, cachedUser);
 
-    // const result = await request;
+    const hasList = lists.length !== 0;
 
-    // const data = viewHelpers.getData(result);
-
-    // const mappedData = viewHelpers.mapData([data], type)[0];
-
-    // const lists = cachedUser.isAnonymous ? [] : await listsHelpers.getListJSON(cachedUser, cachedUser);
-
-    // const hasList = lists.length !== 0;
-
-    // // res.send(mappedData);
-    // res.render('media/media', {
-    //   media: mappedData,
-    //   type,
-    //   cachedUser,
-    //   title: mappedData.title,
-    //   options: lists,
-    //   hasList,
-    //   isLogged: !cachedUser.isAnonymous,
-    // });
-    res.send('Commented to modify view Helper');
+    res.render('media/media', {
+      media: data[0],
+      type,
+      cachedUser,
+      options: lists,
+      hasList,
+      isLogged: !cachedUser.isAnonymous,
+    });
   } catch (error) {
     res.status(404).redirect('/');
   }
