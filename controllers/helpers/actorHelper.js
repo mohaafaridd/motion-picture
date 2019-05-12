@@ -1,4 +1,8 @@
 const moment = require('moment');
+const axios = require('axios');
+const _ = require('lodash');
+
+const mediaInfoGrapper = require('./mediaInfoGrapper');
 
 const getAge = (info) => {
   const birth = moment(info.birthday);
@@ -27,24 +31,27 @@ const getBio = (info) => {
   return bio;
 };
 
-const getImages = (info) => {
-  const images = info.images.profiles;
-  const arr = [];
-  images.forEach(obj => arr.push(obj.file_path));
-  return arr;
-};
-
-const getCountry = (info) => {
+const getCountry = async (info) => {
   const str = info.place_of_birth;
   const arr = str.split(', ');
   const country = arr[arr.length - 1];
-  return country;
+  const valid = country.replace(/[^a-zA-Z ]/g, '');
+  const abbr = await axios.get(`https://restcountries.eu/rest/v2/name/${valid}?fullText=true`);
+  return abbr.data[0].alpha2Code;
+};
+
+const getTopCredits = async (info) => {
+  const asCast = info.combined_credits.cast;
+  const top = _.orderBy(asCast, ['popularity'], ['desc']);
+  const sliced = top.slice(0, 5);
+  const parsed = await mediaInfoGrapper(sliced);
+  return parsed;
 };
 
 module.exports = {
   getAge,
   getGender,
   getBio,
-  getImages,
   getCountry,
+  getTopCredits,
 };

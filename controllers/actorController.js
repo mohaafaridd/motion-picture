@@ -2,7 +2,6 @@ const axios = require('axios');
 const _ = require('lodash');
 
 // Helpers
-const mediaInfoGrapper = require('./helpers/mediaInfoGrapper');
 const actorHelper = require('./helpers/actorHelper');
 
 const getActor = async (req, res) => {
@@ -10,7 +9,7 @@ const getActor = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const URL = `https://api.themoviedb.org/3/person/${id}?api_key=${process.env.TMDB_API_KEY}&language=en-US&append_to_response=combined_credits%2Cimages`;
+    const URL = `https://api.themoviedb.org/3/person/${id}?api_key=${process.env.TMDB_API_KEY}&language=en-US&append_to_response=combined_credits`;
 
     const response = await axios.get(URL);
 
@@ -24,7 +23,6 @@ const getActor = async (req, res) => {
       'name',
       'gender',
       'biography',
-      'images',
       'place_of_birth',
       'profile_path',
       'combined_credits',
@@ -38,13 +36,11 @@ const getActor = async (req, res) => {
       age: actorHelper.getAge(personalInformation),
       isFemale: actorHelper.getGender(personalInformation),
       bio: actorHelper.getBio(personalInformation),
-      images: actorHelper.getImages(personalInformation),
-      country: actorHelper.getCountry(personalInformation),
-      credits: await mediaInfoGrapper(response.data.combined_credits.cast),
+      country: await actorHelper.getCountry(personalInformation),
+      credits: await actorHelper.getTopCredits(personalInformation),
     };
 
-    actor.credits = _.orderBy(actor.credits, ['popularity'], ['desc']);
-
+    // res.send(actor);
     res.render('actor/actor', {
       title: actor.name,
       cachedUser,
