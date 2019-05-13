@@ -51,7 +51,7 @@ const getUser = async (req, res) => {
       isOwner,
     });
   } catch (error) {
-    res.render('404', { error, cachedUser });
+    res.render('404', { title: 'Error', error, cachedUser });
   }
 };
 

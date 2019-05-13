@@ -116,7 +116,7 @@ const view = async (req, res) => {
       isLogged: !cachedUser.isAnonymous,
     });
   } catch (error) {
-    res.status(404).render('404', { error, cachedUser });
+    res.status(404).render('404', { title: 'Error', error, cachedUser });
   }
 };
 

@@ -22,9 +22,9 @@ const getAddList = async (req, res) => {
       throw new Error("You can't access this user");
     }
 
-    res.render('lists/add', { cachedUser, searchedUser });
+    res.render('lists/add', { title: 'Add List', cachedUser, searchedUser });
   } catch (error) {
-    res.render('404', { error, cachedUser });
+    res.render('404', { title: 'Error', error, cachedUser });
   }
 };
 
@@ -54,7 +54,7 @@ const postAddList = async (req, res) => {
     await list.save();
     res.redirect(`/users/${nickname}/`);
   } catch (error) {
-    res.render('404', { error, cachedUser });
+    res.render('404', { title: 'Error', error, cachedUser });
   }
 };
 
@@ -81,9 +81,14 @@ const getEditList = async (req, res) => {
       throw new Error('No list is found');
     }
 
-    res.render('lists/edit', { list, cachedUser, searchedUser });
+    res.render('lists/edit', {
+      title: 'Edit List',
+      list,
+      cachedUser,
+      searchedUser,
+    });
   } catch (error) {
-    res.render('404', { error, cachedUser });
+    res.render('404', { title: 'Error', error, cachedUser });
   }
 };
 
@@ -111,7 +116,7 @@ const postEditList = async (req, res) => {
 
     res.redirect(`/users/${nickname}/`);
   } catch (error) {
-    res.render('404', { error, cachedUser });
+    res.render('404', { title: 'Error', error, cachedUser });
   }
 };
 
@@ -136,7 +141,7 @@ const deleteList = async (req, res) => {
 
     res.redirect(`/users/${nickname}/`);
   } catch (error) {
-    res.render('404', { error, cachedUser });
+    res.render('404', { title: 'Error', error, cachedUser });
   }
 };
 
@@ -182,6 +187,7 @@ const getList = async (req, res) => {
     });
 
     res.render('lists/list', {
+      title: list.name,
       searchedUser,
       list,
       isOwner,
@@ -189,7 +195,7 @@ const getList = async (req, res) => {
       cachedUser,
     });
   } catch (error) {
-    res.render('404', { error, cachedUser });
+    res.render('404', { title: 'Error', error, cachedUser });
   }
 };
 

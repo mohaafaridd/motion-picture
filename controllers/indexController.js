@@ -29,7 +29,7 @@ const getHome = async (req, res) => {
 
 // Registeration page
 const getRegister = async (req, res) => {
-  res.render('index/register', { cachedUser: req.cachedUser });
+  res.render('index/register', { title: 'Register', cachedUser: req.cachedUser });
 };
 
 // Register a user
@@ -86,13 +86,13 @@ const postRegister = async (req, res) => {
     res.status(201).redirect('/');
     // res.redirect('/', 201);
   } catch (error) {
-    res.status(400).render('index/register', { error, cachedUser: req.cachedUser });
+    res.status(400).render('index/register', { title: 'Register', error, cachedUser: req.cachedUser });
   }
 };
 
 // Login page
 const getLogin = async (req, res) => {
-  res.render('index/login', { cachedUser: req.cachedUser });
+  res.render('index/login', { title: 'Login', cachedUser: req.cachedUser });
 };
 
 // Login a user
@@ -104,7 +104,7 @@ const postLogin = async (req, res) => {
     res.status(200).redirect('/');
   } catch (error) {
     error.message = 'Wrong username, email or password.';
-    res.status(400).render('index/login', { error, cachedUser: req.cachedUser });
+    res.status(400).render('index/login', { title: 'Login', error, cachedUser: req.cachedUser });
   }
 };
 

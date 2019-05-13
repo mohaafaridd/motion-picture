@@ -48,7 +48,7 @@ const getActor = async (req, res) => {
     });
   } catch (error) {
     error.message = 'No data was found';
-    res.render('404', { cachedUser, error });
+    res.render('404', { title: 'Error Getting Actor', cachedUser, error });
   }
 };
 
