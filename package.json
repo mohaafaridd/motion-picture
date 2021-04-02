@@ -1,44 +1,44 @@
 {
-    "name": "motion-picture",
-    "version": "0.0.0",
-    "private": true,
-    "scripts": {
-        "start": "node ./bin/www",
-        "dev": "env-cmd ./config/dev.env nodemon ./bin/www",
-        "test": "env-cmd ./config/test.env jest --watch --runInBand"
-    },
-    "jest": {
-        "testEnvironment": "node"
-    },
-    "dependencies": {
-        "axios": "^0.18.0",
-        "bcryptjs": "^2.4.3",
-        "bootstrap": "^4.3.1",
-        "browserify": "^16.2.3",
-        "cookie-parser": "~1.4.3",
-        "debug": "~2.6.9",
-        "express": "~4.16.0",
-        "express-session": "^1.16.1",
-        "hbs": "~4.0.1",
-        "http-errors": "~1.6.2",
-        "jquery": "^3.4.1",
-        "jsonwebtoken": "^8.5.1",
-        "lodash": "^4.17.11",
-        "moment": "^2.24.0",
-        "mongoose": "^5.5.4",
-        "mongoose-sequence": "^5.0.1",
-        "morgan": "~1.9.0",
-        "node-sass-middleware": "0.11.0",
-        "owl.carousel": "^2.3.4",
-        "validator": "^10.11.0"
-    },
-    "devDependencies": {
-        "env-cmd": "^8.0.2",
-        "eslint": "^5.16.0",
-        "eslint-config-airbnb-base": "^13.1.0",
-        "eslint-plugin-import": "^2.17.2",
-        "jest": "^24.7.1",
-        "nodemon": "^1.18.11",
-        "supertest": "^4.0.2"
-    }
+  "name": "motion-picture",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "env-cmd ./config/prod.env node ./bin/www",
+    "dev": "env-cmd ./config/dev.env nodemon ./bin/www",
+    "test": "env-cmd ./config/test.env jest --watch --runInBand"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bcryptjs": "^2.4.3",
+    "bootstrap": "^4.3.1",
+    "browserify": "^16.2.3",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.16.0",
+    "express-session": "^1.16.1",
+    "hbs": "~4.0.1",
+    "http-errors": "~1.6.2",
+    "jquery": "^3.4.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.11",
+    "moment": "^2.24.0",
+    "mongoose": "^5.5.4",
+    "mongoose-sequence": "^5.0.1",
+    "morgan": "~1.9.0",
+    "node-sass-middleware": "0.11.0",
+    "owl.carousel": "^2.3.4",
+    "validator": "^10.11.0"
+  },
+  "devDependencies": {
+    "env-cmd": "^8.0.2",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.2",
+    "jest": "^24.7.1",
+    "nodemon": "^1.18.11",
+    "supertest": "^4.0.2"
+  }
 }
