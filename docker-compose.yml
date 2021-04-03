@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  motion-picture:
+    restart: always
+    container_name: motion-picture
+    build:
+      context: ./
+    command: npm run start
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    ports:
+      - "3002:3000"
