@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "env-cmd ./config/prod.env node ./bin/www",
-    "dev": "env-cmd ./config/dev.env nodemon ./bin/www",
-    "test": "env-cmd ./config/test.env jest --watch --runInBand"
+    "start": "node ./bin/www",
+    "start:dev": "nodemon ./bin/www",
+    "test": "jest --watch --runInBand"
   },
   "jest": {
     "testEnvironment": "node"
@@ -17,6 +17,7 @@
     "browserify": "^16.2.3",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
+    "dotenv": "^8.2.0",
     "express": "~4.16.0",
     "express-session": "^1.16.1",
     "hbs": "~4.0.1",
@@ -33,7 +34,6 @@
     "validator": "^10.11.0"
   },
   "devDependencies": {
-    "env-cmd": "^8.0.2",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.17.2",

@@ -11,7 +11,7 @@ const mapInput = input => input.map(e => ({
 const mapSimpleRequests = lists => lists
   .map(
     media => axios.get(
-      `https://api.themoviedb.org/3/${media.type}/${media.id}?api_key=${process.env.TMDB_API_KEY}`
+      `https://api.themoviedb.org/3/${media.type}/${media.id}?api_key=${process.env.TMDB_API_KEY}`,
     ),
   );
 

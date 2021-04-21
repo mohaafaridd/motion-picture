@@ -1,3 +1,9 @@
+require('dotenv').config({
+  path:
+    process.env.NODE_ENV === 'development'
+      ? './config/dev.env'
+      : './config/prod.env',
+});
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -15,6 +21,7 @@ const actorRouter = require('./routes/actor');
 
 const app = express();
 connectDB();
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -26,16 +33,26 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(sassMiddleware({
-  src: path.join(__dirname, 'public'),
-  dest: path.join(__dirname, 'public'),
-  indentedSyntax: false, // true = .sass and false = .scss
-  sourceMap: true,
-}));
+app.use(
+  sassMiddleware({
+    src: path.join(__dirname, 'public'),
+    dest: path.join(__dirname, 'public'),
+    indentedSyntax: false, // true = .sass and false = .scss
+    sourceMap: true,
+  }),
+);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
-app.use('/owlcarousel', express.static(path.join(__dirname, 'node_modules', 'owl.carousel', 'dist')));
-app.use('/owlcarousel', express.static(path.join(__dirname, 'node_modules', 'owl.carousel', 'dist', 'assets')));
+app.use(
+  '/owlcarousel',
+  express.static(path.join(__dirname, 'node_modules', 'owl.carousel', 'dist')),
+);
+app.use(
+  '/owlcarousel',
+  express.static(
+    path.join(__dirname, 'node_modules', 'owl.carousel', 'dist', 'assets'),
+  ),
+);
 app.disable('x-powered-by');
 
 app.use('/', indexRouter);
@@ -54,7 +71,7 @@ app.use((req, res, next) => {
 });
 
 // error handler
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

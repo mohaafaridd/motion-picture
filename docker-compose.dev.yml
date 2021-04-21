@@ -1,0 +1,21 @@
+version: '3.5'
+services:
+  app:
+    restart: always
+    container_name: motion-picture
+    build:
+      context: ./
+      target: dev
+    command: npm run start:dev
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    ports:
+      - '3002:3002'
+    networks:
+      - main-network
+
+networks:
+  main-network:
+    external:
+      name: main-network
