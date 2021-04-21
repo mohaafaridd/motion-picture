@@ -1,0 +1,17 @@
+version: '3.5'
+services:
+  app:
+    restart: always
+    container_name: motion-picture
+    build:
+      context: ./
+      target: production
+    ports:
+      - '3002:3002'
+    networks:
+      - main-network
+
+networks:
+  main-network:
+    external:
+      name: main-network
