@@ -1,7 +1,17 @@
 version: '3.5'
 services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - mongodb_data_container:/data/db
+    ports:
+      - 27017:27017
+
   app:
-    restart: always
     container_name: motion-picture
     build:
       context: ./
@@ -11,11 +21,10 @@ services:
       - ./:/app
       - /app/node_modules
     ports:
-      - '3002:3002'
-    networks:
-      - main-network
+      - '3003:3000'
+    depends_on:
+      - mongodb
 
-networks:
-  main-network:
-    external:
-      name: main-network
+
+volumes:
+  mongodb_data_container:

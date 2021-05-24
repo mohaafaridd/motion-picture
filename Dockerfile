@@ -1,12 +1,12 @@
 FROM node:12-alpine as dev
 
-RUN apk add g++ make python
+# RUN apk add g++ make python
 
 WORKDIR /home/app/
 
 ENV NODE_ENV=development
 
-ENV PORT=3002
+# ENV PORT=3002
 
 COPY package*.json ./
 
