@@ -7,7 +7,7 @@ services:
       - PUID=1000
       - PGID=1000
     volumes:
-      - /home/database:/data/db
+      - mongodb_data_container:/data/db
     ports:
       - 27017:27017
 
@@ -16,7 +16,14 @@ services:
     build:
       context: ./
       target: production
+    volumes:
+      - ./:/app
+      - /app/node_modules
     ports:
       - '3003:3000'
-    networks:
-      - main-network
+    depends_on:
+      - mongodb
+
+
+volumes:
+  mongodb_data_container:
